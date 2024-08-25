@@ -9,14 +9,17 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { Tabs, message, theme } from 'antd';
+import { Tabs, theme } from 'antd';
 import { useState } from 'react';
 import styles from './index.module.less'
+import { useMutation } from '@apollo/client';
+import { SEND_CODE_MSG } from '../../grapgql/auth';
 type LoginType = 'phone' | 'account';
 
 const Page = () => {
   const [loginType, setLoginType] = useState<LoginType>('phone');
   const { token } = theme.useToken();
+  const [run] = useMutation(SEND_CODE_MSG);
   return (
     <div
       className={styles.container}
@@ -140,8 +143,13 @@ const Page = () => {
                   message: '请输入验证码！',
                 },
               ]}
-              onGetCaptcha={async () => {
-                message.success('获取验证码成功！验证码为：1234');
+              onGetCaptcha={async (tel: string) => {
+                console.log('tel', tel);
+                run({
+                  variables: {
+                    tel
+                  }
+                })
               }}
             />
           </>
