@@ -9,17 +9,28 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { Tabs, theme } from 'antd';
+import { message, Tabs, theme } from 'antd';
 import { useState } from 'react';
 import styles from './index.module.less'
 import { useMutation } from '@apollo/client';
 import { SEND_CODE_MSG } from '../../grapgql/auth';
+import { ProFormInstance } from '@ant-design/pro-components';
+import React from 'react';
 type LoginType = 'phone' | 'account';
+
+interface IValue{
+  tel: string;
+  code: string;
+}
 
 const Page = () => {
   const [loginType, setLoginType] = useState<LoginType>('phone');
   const { token } = theme.useToken();
   const [run] = useMutation(SEND_CODE_MSG);
+  const formRef = React.useRef<ProFormInstance>();// 引入获取form表单实例
+  const login = async (values: IValue) => {
+    
+  }
   return (
     <div
       className={styles.container}
@@ -32,8 +43,10 @@ const Page = () => {
           backgroundColor: 'rgba(0, 0, 0,0.65)',
           backdropFilter: 'blur(4px)',
         }}
+        onFinish={login}
+        formRef={formRef}
       >
-        <Tabs
+        <Tabs 
           centered
           activeKey={loginType}
           onChange={(activeKey) => setLoginType(activeKey as LoginType)}
@@ -101,7 +114,7 @@ const Page = () => {
                   />
                 ),
               }}
-              name="mobile"
+              name="tel"
               placeholder={'手机号'}
               rules={[
                 {
@@ -143,13 +156,19 @@ const Page = () => {
                   message: '请输入验证码！',
                 },
               ]}
-              onGetCaptcha={async (tel: string) => {
+              onGetCaptcha={async () => {
+                const tel = formRef.current?.getFieldValue('tel');
                 console.log('tel', tel);
-                run({
+                const res = await run({
                   variables: {
                     tel
                   }
-                })
+                });
+                if (res.data.sendCodeMsg) {
+                  message.success(`获取验证码成功`);
+                } else {
+                  message.error(`获取验证码失败！`)
+                }
               }}
             />
           </>
