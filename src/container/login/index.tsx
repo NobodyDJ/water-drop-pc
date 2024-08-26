@@ -13,7 +13,7 @@ import { message, Tabs, theme } from 'antd';
 import { useState } from 'react';
 import styles from './index.module.less'
 import { useMutation } from '@apollo/client';
-import { SEND_CODE_MSG } from '../../grapgql/auth';
+import { LOGIN, SEND_CODE_MSG } from '../../grapgql/auth';
 import { ProFormInstance } from '@ant-design/pro-components';
 import React from 'react';
 type LoginType = 'phone' | 'account';
@@ -27,9 +27,17 @@ const Page = () => {
   const [loginType, setLoginType] = useState<LoginType>('phone');
   const { token } = theme.useToken();
   const [run] = useMutation(SEND_CODE_MSG);
+  const [login] = useMutation(LOGIN);
   const formRef = React.useRef<ProFormInstance>();// 引入获取form表单实例
-  const login = async (values: IValue) => {
-    
+  const loginHandler = async (values: IValue) => {
+    const res = await login({
+      variables: values
+    });
+    if (res.data.login) {
+      message.success('登陆成功');
+      return;
+    }
+    message.error('登陆失败');  
   }
   return (
     <div
@@ -43,7 +51,7 @@ const Page = () => {
           backgroundColor: 'rgba(0, 0, 0,0.65)',
           backdropFilter: 'blur(4px)',
         }}
-        onFinish={login}
+        onFinish={loginHandler}
         formRef={formRef}
       >
         <Tabs 
@@ -149,7 +157,7 @@ const Page = () => {
                 }
                 return '获取验证码';
               }}
-              name="captcha"
+              name="code"
               rules={[
                 {
                   required: true,
@@ -158,7 +166,6 @@ const Page = () => {
               ]}
               onGetCaptcha={async () => {
                 const tel = formRef.current?.getFieldValue('tel');
-                console.log('tel', tel);
                 const res = await run({
                   variables: {
                     tel
