@@ -33,11 +33,11 @@ const Page = () => {
     const res = await login({
       variables: values
     });
-    if (res.data.login) {
-      message.success('登陆成功');
+    if (res.data.login.code === 200) {
+      message.success(res.data.login.message);
       return;
     }
-    message.error('登陆失败');  
+    message.error(res.data.login.message);  
   }
   return (
     <div
@@ -171,10 +171,11 @@ const Page = () => {
                     tel
                   }
                 });
-                if (res.data.sendCodeMsg) {
-                  message.success(`获取验证码成功`);
+                console.log('res', res);
+                if (res.data.sendCodeMsg.code === 200) {
+                  message.success(res.data.sendCodeMsg.message);
                 } else {
-                  message.error(`获取验证码失败！`)
+                  message.error(res.data.sendCodeMsg.message)
                 }
               }}
             />
