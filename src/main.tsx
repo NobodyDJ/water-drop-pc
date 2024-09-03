@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { ApolloProvider } from '@apollo/client'
-import { client } from './utils/index.ts'
+import { client } from './utils/apollo.ts'
 
 createRoot(document.getElementById('root')!).render(
   <ApolloProvider client={client}>

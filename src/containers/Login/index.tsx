@@ -16,11 +16,14 @@ import { useMutation } from '@apollo/client';
 import { LOGIN, SEND_CODE_MSG } from '../../grapgql/auth';
 import { ProFormInstance } from '@ant-design/pro-components';
 import React from 'react';
+import { AUTH_TOKEN } from '../../utils/constants';
+import { useNavigate } from 'react-router-dom';
 type LoginType = 'phone' | 'account';
 
 interface IValue{
   tel: string;
   code: string;
+  autoLogin: boolean;
 }
 
 const Page = () => {
@@ -29,12 +32,17 @@ const Page = () => {
   const [run] = useMutation(SEND_CODE_MSG);
   const [login] = useMutation(LOGIN);
   const formRef = React.useRef<ProFormInstance>();// 引入获取form表单实例
+  const nav = useNavigate();
   const loginHandler = async (values: IValue) => {
     const res = await login({
       variables: values
     });
     if (res.data.login.code === 200) {
+      if (values.autoLogin) {
+        localStorage.setItem(AUTH_TOKEN, res.data.login.data);
+      }
       message.success(res.data.login.message);
+      nav('/');
       return;
     }
     message.error(res.data.login.message);  
