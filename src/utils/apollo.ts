@@ -6,6 +6,8 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
+    // 发送请求之前添加Authorization属性
+    // 获取到的token中携带用户的id信息
     const token = localStorage.getItem(AUTH_TOKEN);
     return {
         headers: {

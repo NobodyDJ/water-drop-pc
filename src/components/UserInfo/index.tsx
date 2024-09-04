@@ -1,12 +1,16 @@
-import style from './index.module.less';
-import { connect, useUserContext } from '../../utils/userHooks';
+import { IPropChild } from '../../utils/types';
+import { connect, useGetUser } from '../../utils/userHooks';
 
 /**
-*
+*   获取用户信息组件
 */
-const UserInfo = () => {
-    const { store, setStore } = useUserContext()
-    return (<div className={style.container}>sss</div>);
+const UserInfo = ({ children }: IPropChild) => {
+    useGetUser();
+    return (
+        <div>
+            {children}
+        </div>
+    );
 };
 
 //

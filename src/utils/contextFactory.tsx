@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
+import { IPropChild } from "./types";
 
 interface IStore{
     key: string;
@@ -7,15 +8,11 @@ interface IStore{
     setStore: (payload: Record<string, any>) => void;
 }
 
-interface IProp{
-    children: React.ReactNode
-}
-
 const getCxtProvider = (
     key: string,
     defaultValue: Record<string, any>,
     AppContext: React.Context<IStore>,
-) => ({ children }: IProp) => {
+) => ({ children }: IPropChild) => {
     const [store, setStore] = useState(defaultValue);
     const value = useMemo(() => ({
         key, store, setStore
@@ -34,7 +31,7 @@ const cxtCache: Record<string, Cxt> = {};
 class Cxt{
     defaultStore: IStore;
     AppContext: React.Context<IStore>;
-    Provider: ({ children }: IProp) => JSX.Element;
+    Provider: ({ children }: IPropChild) => JSX.Element;
     constructor(key: string, defaultValue: Record<string, any>) {
         this.defaultStore = {
             key,
@@ -51,6 +48,8 @@ class Cxt{
 // 封装了获取具体全局变量的hooks
 export const useAppContext = (key: string)=> {
     const cxt = cxtCache[key];
+    // useContext返回的数据结构为{ key, store, setStore }
+    // 因为AppContext.Provider组件提供的value包含这些值
     const app = useContext(cxt.AppContext);
     return {
         store: app.store,
@@ -70,9 +69,10 @@ export const connectFactory = (
     } else {
         CurCxt = new Cxt(key, defaultValue);
     }
-    return (Child: React.FunctionComponent<any>) => (props: any)=>{
+    // 注意这里需要返回React.ReactNode的数据格式
+    return (Child: React.FunctionComponent<any>) => (props: any)=>(
         <CurCxt.Provider>
             <Child {...props} />
         </CurCxt.Provider>
-    }
+    )
 }
