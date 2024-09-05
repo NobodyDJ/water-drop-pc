@@ -13,11 +13,12 @@ import { message, Tabs, theme } from 'antd';
 import { useState } from 'react';
 import styles from './index.module.less'
 import { useMutation } from '@apollo/client';
-import { LOGIN, SEND_CODE_MSG } from '../../grapgql/auth';
+import { LOGIN, SEND_CODE_MSG } from '@/graphgql/auth';
 import { ProFormInstance } from '@ant-design/pro-components';
 import React from 'react';
-import { AUTH_TOKEN } from '../../utils/constants';
-import { useNavigate } from 'react-router-dom';
+import { AUTH_TOKEN } from '@/utils/constants';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTitle } from '@/hooks';
 type LoginType = 'phone' | 'account';
 
 interface IValue{
@@ -31,18 +32,25 @@ const Page = () => {
   const { token } = theme.useToken();
   const [run] = useMutation(SEND_CODE_MSG);
   const [login] = useMutation(LOGIN);
+  // 获取之前跳转失败的路径
+  const [params] = useSearchParams();
   const formRef = React.useRef<ProFormInstance>();// 引入获取form表单实例
   const nav = useNavigate();
+  useTitle('登录')
   const loginHandler = async (values: IValue) => {
     const res = await login({
       variables: values
     });
     if (res.data.login.code === 200) {
       if (values.autoLogin) {
+        sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, res.data.login.data);
+      } else {
+        localStorage.setItem(AUTH_TOKEN, '');
+        sessionStorage.setItem(AUTH_TOKEN, res.data.login.data);
       }
       message.success(res.data.login.message);
-      nav('/');
+      nav(params.get('orgUrl') || '/');
       return;
     }
     message.error(res.data.login.message);  
@@ -52,6 +60,7 @@ const Page = () => {
       className={styles.container}
     >
       <LoginFormPage
+        initialValues={{tel: '18221941518'}}
         backgroundImageUrl="https://mdn.alipayobjects.com/huamei_gcee1x/afts/img/A*y0ZTS6WLwvgAAAAAAAAAAAAADml6AQ/fmt.webp"
         logo="https://water-drop-assets-dj.oss-cn-shanghai.aliyuncs.com/images/henglogo%403x.png"
         backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
@@ -66,9 +75,10 @@ const Page = () => {
           centered
           activeKey={loginType}
           onChange={(activeKey) => setLoginType(activeKey as LoginType)}
+          items={[{key: 'phone', label: '手机号登录'}]}
         >
-          {/* <Tabs.TabPane key={'account'} tab={'账号密码登录'} /> */}
-          <Tabs.TabPane key={'phone'} tab={'手机号登录'} />
+          {/* <Tabs.TabPane key={'account'} tab={'账号密码登录'} />
+          <Tabs.TabPane key={'phone'} tab={'手机号登录'} /> */}
         </Tabs>
         {/* {loginType === 'account' && (
           <>

@@ -1,5 +1,5 @@
 import style from './index.module.less';
-import { useUserContext } from '../../utils/userHooks';
+import { useUserContext } from '@/hooks/userHooks';
 
 /**
 *

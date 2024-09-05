@@ -1,6 +1,6 @@
-import Home from '../containers/Home'
-import Login from '../containers/Login'
-import NotFound from '../containers/NotFound'
+import Home from '@/containers/Home'
+import Login from '@/containers/Login'
+import NotFound from '@/containers/NotFound'
 export const ROUTE_CONFIG = [
     {
         key: 'home',

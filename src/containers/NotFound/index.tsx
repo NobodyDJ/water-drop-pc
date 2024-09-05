@@ -1,14 +1,12 @@
-import { useState, useEffect } from 'react';
 import { Button, Result } from 'antd';
+import { useUserContext } from '@/hooks/userHooks';
 
 /**
 *
 */
 const NotFound = () => {
-    const [state, setState] = useState();
-    useEffect(() => {
-        console.log(state, setState);
-    }, []);
+    const { store } = useUserContext();
+    console.log('store', store);
     return (
         <Result
         status="404"
