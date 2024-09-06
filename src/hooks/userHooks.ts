@@ -34,12 +34,12 @@ export const useGetUser = () => {
             }
             // 用户没有登录要返回登录界面
             // 防止token没有拿到后，页面重复刷新跳转登陆页面
-            if (location.pathname.startsWith('/login')) {
+            if (location.pathname !== '/login') {
                 nav(`/login?orgUrl=${window.location.pathname}`);
             }
         },
         onError: () => {
-            if (location.pathname.startsWith('/login')) {
+            if (location.pathname !== '/login') {
                 nav(`/login?orgUrl=${window.location.pathname}`);
             }
         }

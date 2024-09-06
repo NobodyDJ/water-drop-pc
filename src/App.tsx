@@ -3,6 +3,7 @@ import './App.css'
 import { ROUTE_CONFIG } from './routes'
 import NotFound from './containers/NotFound'
 import UserInfo from './components/UserInfo'
+import Layout from './components/Layout'
 
 function App() {
   return (
@@ -11,14 +12,20 @@ function App() {
       <UserInfo>
         {/* 路由集合 */}
         <Routes>
-          {/* 可以优化写成一个路由列表 */}
-          {ROUTE_CONFIG.map((item) => {
-            return (<Route
-              key={item.key}
-              path={item.path}
-              element={<item.element />}
-            />)
-          })}
+          <Route
+            path='/'
+            element={ <Layout/> }
+          >
+            {/* 可以优化写成一个路由列表 */}
+            {/* 此处作为outLet的内容回显，作用类似于插槽 */}
+            {ROUTE_CONFIG.map((item) => {
+              return (<Route
+                key={item.key}
+                path={item.path}
+                element={<item.element />}
+              />)
+            })}
+          </Route>
           <Route path='*' element={ <NotFound/> } />
         </Routes>
       </UserInfo>
