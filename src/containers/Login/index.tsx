@@ -19,6 +19,7 @@ import React from 'react';
 import { AUTH_TOKEN } from '@/utils/constants';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTitle } from '@/hooks';
+import { useUserContext } from '@/hooks/userHooks';
 type LoginType = 'phone' | 'account';
 
 interface IValue{
@@ -34,6 +35,7 @@ const Page = () => {
   const [login] = useMutation(LOGIN);
   // 获取之前跳转失败的路径
   const [params] = useSearchParams();
+  const { store } = useUserContext();
   const formRef = React.useRef<ProFormInstance>();// 引入获取form表单实例
   const nav = useNavigate();
   useTitle('登录')
@@ -42,6 +44,7 @@ const Page = () => {
       variables: values
     });
     if (res.data.login.code === 200) {
+      store.refetchHandle();
       if (values.autoLogin) {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, res.data.login.data);
@@ -50,7 +53,7 @@ const Page = () => {
         sessionStorage.setItem(AUTH_TOKEN, res.data.login.data);
       }
       message.success(res.data.login.message);
-      nav(params.get('orgUrl') || '/');
+      nav(params.get('orgUrl') || '/home');
       return;
     }
     message.error(res.data.login.message);  
