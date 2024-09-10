@@ -8,6 +8,16 @@ const DEFAULT_VALUE = {
 
 }
 
+interface IUser {
+    id: string;
+    tel: string;
+    name: string;
+    desc: string;
+    avatar: string;
+    refetchHandler?: () => void;
+    currentOrg?: string;
+}
+
 // 获取某个具体全局变量的值
 export const useUserContext = () => useAppContext(KEY);
 
@@ -19,12 +29,12 @@ export const useGetUser = () => {
     const { setStore } = useUserContext();
     const location = useLocation();
     const nav = useNavigate()
-    const { loading, refetch } = useQuery(GET_USER, {
+    const { loading, refetch } = useQuery<{getUserInfo: IUser}>(GET_USER, {
         onCompleted: (data) => {
             if (data.getUserInfo) {
-                const { id, name, tel } = data.getUserInfo;
+                const { id, name, tel, desc, avatar } = data.getUserInfo;
                 setStore({
-                    id, name, tel
+                    id, name, tel, desc, avatar
                 });
                 // 确保登录之后，不再跳转到登录页面
                 if (location.pathname.startsWith('/login')) {

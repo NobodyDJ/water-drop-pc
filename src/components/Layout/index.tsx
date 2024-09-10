@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { MenuDataItem, PageContainer, ProLayout } from '@ant-design/pro-components';
+import { MenuDataItem, ProLayout } from '@ant-design/pro-components';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import style from './index.module.less'
 import { useUserContext } from '@/hooks/userHooks';
@@ -48,10 +48,8 @@ const Layout = () => {
             menuItemRender={menuItemRender}
             onMenuHeaderClick={()=>nav('/')}
         >
-            <PageContainer>
-                {/* 此处使用useOutLet的hook也可以实现相同功能 */}
-                <Outlet></Outlet>
-            </PageContainer>
+            {/* 此处使用useOutLet的hook也可以实现相同功能 */}
+            <Outlet></Outlet>
         </ProLayout>
     );
 };

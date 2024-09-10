@@ -6,6 +6,9 @@ query getUserInfo{
     id
     tel
     code
+    name
+    desc
+    avatar
   }
 }
 `
