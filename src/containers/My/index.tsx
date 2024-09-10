@@ -4,6 +4,8 @@ import { PageContainer, ProForm, ProFormInstance, ProFormText, ProFormTextArea }
 import { Col, message, Row } from 'antd';
 import OSSImageUpload from '@/components/OSSImageUpload';
 import { useUserContext } from '@/hooks/userHooks';
+import { useMutation } from '@apollo/client';
+import { UPDATE_USER } from '@/graphgql/user';
 
 /**
 *
@@ -11,7 +13,7 @@ import { useUserContext } from '@/hooks/userHooks';
 const My = () => {
     const formRef = useRef<ProFormInstance>();
     const { store } = useUserContext();
-    console.log('store', store);
+    const [updateUserInfo] = useMutation(UPDATE_USER);
     useEffect(() => {
         // 初始化用户信息
         if (!store.tel) return;
@@ -38,8 +40,21 @@ const My = () => {
                     }
                 }}
                 onFinish={async (values) => {
-                    console.log('values', values);
-                    message.success('更新成功');
+                    const res = await updateUserInfo({
+                        variables: {
+                            id: store.id,
+                            params: {
+                                name: values.name,
+                                desc: values.desc,
+                                avatar: ''
+                            }
+                        }
+                    })
+                    if (res.data.updateUserInfo.code === 200) {
+                        message.success(res.data.updateUserInfo.message);
+                        return
+                    }
+                    message.error(res.data.updateUserInfo.message);
                 }}
             >
                 <Row>
