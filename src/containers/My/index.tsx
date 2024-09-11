@@ -6,6 +6,7 @@ import OSSImageUpload from '@/components/OSSImageUpload';
 import { useUserContext } from '@/hooks/userHooks';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER } from '@/graphgql/user';
+import FormItem from 'antd/es/form/FormItem';
 
 /**
 *
@@ -40,13 +41,14 @@ const My = () => {
                     }
                 }}
                 onFinish={async (values) => {
+                    console.log('values', values);
                     const res = await updateUserInfo({
                         variables: {
                             id: store.id,
                             params: {
                                 name: values.name,
                                 desc: values.desc,
-                                avatar: ''
+                                avatar: values.avatar.url
                             }
                         }
                     })
@@ -77,7 +79,9 @@ const My = () => {
                         />
                     </Col>
                     <Col>
-                        <OSSImageUpload />
+                        <FormItem name="avatar">
+                            <OSSImageUpload />
+                        </FormItem>
                     </Col>
                 </Row>
             </ProForm>
