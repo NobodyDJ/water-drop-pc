@@ -48,9 +48,9 @@ const OSSImageUpload = ({ value, onChange }: OSSUploadProps) => {
         // 获取文件的后缀
         const suffix = file.name.slice(file.name.lastIndexOf('.'));
         const filename = Date.now() + suffix;
-        key.current = `${OSSData?.dir}/${filename}`
+        key.current = `${OSSData?.dir}${filename}`
         return {
-            key,
+            key: key.current,
             OSSAccessKeyId: OSSData?.accessId,
             policy: OSSData?.policy,
             Signature: OSSData?.signature,
@@ -76,20 +76,18 @@ const OSSImageUpload = ({ value, onChange }: OSSUploadProps) => {
     };
 
     return (
-        <ImgCrop 
-            rotationSlider
-        >
+        <ImgCrop rotationSlider>
             <Upload
-            name='file'
-            fileList={value ? [value]: []}
-            action={OSSData?.host}
-            listType="picture-card"
-            onChange={handleChange}
-            data={getExtraData} // 上传需要的额外参数
-            beforeUpload={beforeUpload}
+                name="file"
+                listType="picture-card"
+                fileList={value ? [value] : []}
+                action={OSSData?.host}
+                onChange={handleChange}
+                data={getExtraData}
+                beforeUpload={beforeUpload}
         >
             {/* <Button icon={<UploadOutlined />}>Click to Upload</Button> */}
-            替换头像
+            + 替换头像
         </Upload>
         </ImgCrop>
     );

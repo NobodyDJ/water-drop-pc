@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { PageContainer, ProForm, ProFormInstance, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
-import { Col, message, Row } from 'antd';
+import { App, Col, Row } from 'antd';
 import OSSImageUpload from '@/components/OSSImageUpload';
 import { useUserContext } from '@/hooks/userHooks';
 import { useMutation } from '@apollo/client';
@@ -15,6 +15,7 @@ const My = () => {
     const formRef = useRef<ProFormInstance>();
     const { store } = useUserContext();
     const [updateUserInfo] = useMutation(UPDATE_USER);
+    const { message } = App.useApp();
     useEffect(() => {
         // 初始化用户信息
         if (!store.tel) return;
@@ -48,11 +49,12 @@ const My = () => {
                             params: {
                                 name: values.name,
                                 desc: values.desc,
-                                avatar: values.avatar.url
+                                avatar: values.avatar?.url || ''
                             }
                         }
                     })
                     if (res.data.updateUserInfo.code === 200) {
+                        store.refetchHandler();
                         message.success(res.data.updateUserInfo.message);
                         return
                     }

@@ -9,7 +9,7 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { message, Tabs, theme } from 'antd';
+import { App, Tabs, theme } from 'antd';
 import { useState } from 'react';
 import styles from './index.module.less'
 import { useMutation } from '@apollo/client';
@@ -33,6 +33,7 @@ const Page = () => {
   const { token } = theme.useToken();
   const [run] = useMutation(SEND_CODE_MSG);
   const [login] = useMutation(LOGIN);
+  const { message } = App.useApp();
   // 获取之前跳转失败的路径
   const [params] = useSearchParams();
   const { store } = useUserContext();
@@ -44,7 +45,7 @@ const Page = () => {
       variables: values
     });
     if (res.data.login.code === 200) {
-      store.refetchHandle();
+      store.refetchHandler();
       if (values.autoLogin) {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, res.data.login.data);

@@ -29,12 +29,13 @@ export const useGetUser = () => {
     const { setStore } = useUserContext();
     const location = useLocation();
     const nav = useNavigate()
-    const { loading, refetch } = useQuery<{getUserInfo: IUser}>(GET_USER, {
+    const { loading, refetch } = useQuery<{ getUserInfo: IUser }>(GET_USER, {
+        notifyOnNetworkStatusChange: true,
         onCompleted: (data) => {
             if (data.getUserInfo) {
                 const { id, name, tel, desc, avatar } = data.getUserInfo;
                 setStore({
-                    id, name, tel, desc, avatar
+                    id, name, tel, desc, avatar, refetchHandler: refetch
                 });
                 // 确保登录之后，不再跳转到登录页面
                 if (location.pathname.startsWith('/login')) {
@@ -44,13 +45,13 @@ export const useGetUser = () => {
             }
             // 用户没有登录要返回登录界面
             // 防止token没有拿到后，页面重复刷新跳转登陆页面
-            setStore({ refetchHandle: refetch });
+            setStore({ refetchHandler: refetch });
             if (location.pathname !== '/login') {
                 nav(`/login?orgUrl=${window.location.pathname || '/home' }`);
             }
         },
         onError: () => {
-            setStore({ refetchHandle: refetch });
+            setStore({ refetchHandler: refetch });
             if (location.pathname !== '/login') {
                 nav(`/login?orgUrl=${window.location.pathname || '/home'}`);
             }

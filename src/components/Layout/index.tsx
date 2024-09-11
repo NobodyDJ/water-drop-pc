@@ -4,8 +4,11 @@ import { MenuDataItem, ProLayout } from '@ant-design/pro-components';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import style from './index.module.less'
 import { useUserContext } from '@/hooks/userHooks';
-import { routes } from '@/routes/menus';
+import { ROUTE_KEY, routes } from '@/routes/menus';
 import { AUTH_TOKEN } from '@/utils/constants';
+import { Space } from 'antd';
+import { LogoutOutlined } from '@ant-design/icons';
+import { useGoTo } from '@/hooks';
 
 
 const menuItemRender = (
@@ -17,12 +20,9 @@ const menuItemRender = (
 *   外层框架
 */
 const Layout = () => {
-    const [state, setState] = useState();
     const { store } = useUserContext();
     const nav = useNavigate();
-    useEffect(() => {
-        console.log(state, setState);
-    }, []);
+    const { go } = useGoTo();
     const logout = () => {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, '');
@@ -33,11 +33,17 @@ const Layout = () => {
             siderWidth={130}
             layout='mix'
             avatarProps={{
-                src: 'https://water-drop-assets-dj.oss-cn-shanghai.aliyuncs.com/images/henglogo%403x.png',
-                title: store.tel,
+                src: store.avatar || null,
+                title: store.name,
                 size: 'small',
-                onClick: logout
+                onClick: ()=> go(ROUTE_KEY.MY),
             }}
+            links={[
+                <Space size={20} onClick={logout}>
+                    <LogoutOutlined />
+                    退出
+                </Space>
+            ]}
             logo='https://water-drop-assets-dj.oss-cn-shanghai.aliyuncs.com/images/henglogo%403x.png'
             title={ false }
             className={style.container}
