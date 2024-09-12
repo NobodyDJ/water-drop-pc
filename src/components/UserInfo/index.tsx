@@ -16,5 +16,6 @@ const UserInfo = ({ children }: IPropChild) => {
     );
 };
 
-//
-export default connect(UserInfo);
+const ConnectedStudentInfo = connect(UserInfo);
+
+export default ConnectedStudentInfo;

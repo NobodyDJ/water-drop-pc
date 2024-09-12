@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
 
 import { PageContainer, ProForm, ProFormInstance, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
-import { App, Col, Row } from 'antd';
+import { App, Col, Row, Space } from 'antd';
 import OSSImageUpload from '@/components/OSSImageUpload';
 import { useUserContext } from '@/hooks/userHooks';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER } from '@/graphgql/user';
 import FormItem from 'antd/es/form/FormItem';
+import styles from './index.module.less'
 
 /**
 *
@@ -81,7 +82,7 @@ const My = () => {
                         />
                     </Col>
                     <Col>
-                        <FormItem name="avatar">
+                        <FormItem className={styles.avatar } name="avatar">
                             <OSSImageUpload />
                         </FormItem>
                     </Col>

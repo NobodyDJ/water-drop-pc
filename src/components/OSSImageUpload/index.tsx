@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import type { UploadFile, UploadProps } from 'antd';
-import { Upload } from 'antd';
+import { Button, Upload } from 'antd';
 import { useQuery } from '@apollo/client';
 import { GET_OSS_INFO } from '@/graphgql/oss';
 import ImgCrop from 'antd-img-crop';
+import { UploadOutlined } from '@ant-design/icons';
 
 interface OSSDataType {
   dir: string;
@@ -36,13 +37,14 @@ const OSSImageUpload = ({ value, onChange }: OSSUploadProps) => {
         onChange?.(newFile);
     };
 
-    // const onRemove = (file: UploadFile) => {
-    //     const files = (value || []).filter((v) => v.url !== file.url);
+    const handleRemove = (file: UploadFile) => {
+        const newFile = {
+            ...file,
+            url: ''
+        };
 
-    //     if (onChange) {
-    //         onChange(files);
-    //     }
-    // };
+        onChange?.(newFile);
+    };
 
     const getExtraData: UploadProps['data'] = (file) => {
         // 获取文件的后缀
@@ -83,10 +85,10 @@ const OSSImageUpload = ({ value, onChange }: OSSUploadProps) => {
                 fileList={value ? [value] : []}
                 action={OSSData?.host}
                 onChange={handleChange}
+                onRemove={handleRemove}
                 data={getExtraData}
                 beforeUpload={beforeUpload}
         >
-            {/* <Button icon={<UploadOutlined />}>Click to Upload</Button> */}
             + 替换头像
         </Upload>
         </ImgCrop>

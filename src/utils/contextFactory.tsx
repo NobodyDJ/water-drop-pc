@@ -1,12 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useMemo, useState } from "react";
-import { IPropChild } from "./types";
-
-interface IStore{
-    key: string;
-    store: Record<string, any>;
-    setStore: (payload: Record<string, any>) => void;
-}
+import { IPropChild, IStore } from "./types";
 
 const getCxtProvider = (
     key: string,

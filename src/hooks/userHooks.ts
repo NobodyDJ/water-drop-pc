@@ -2,20 +2,11 @@ import { useQuery } from "@apollo/client";
 import { connectFactory, useAppContext } from "../utils/contextFactory";
 import { GET_USER } from "../graphgql/user";
 import { useLocation, useNavigate } from "react-router-dom";
+import { IUser } from "@/utils/types";
 
 const KEY = 'userInfo';
 const DEFAULT_VALUE = {
 
-}
-
-interface IUser {
-    id: string;
-    tel: string;
-    name: string;
-    desc: string;
-    avatar: string;
-    refetchHandler?: () => void;
-    currentOrg?: string;
 }
 
 // 获取某个具体全局变量的值
