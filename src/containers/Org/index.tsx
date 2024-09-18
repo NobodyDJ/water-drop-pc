@@ -4,23 +4,54 @@ import {
     PageContainer,
     ProList,
   } from '@ant-design/pro-components';
-  import { Button } from 'antd';
+  import { Button, Tag } from 'antd';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
-import EditOrg from './components';
+import EditOrg from './components/EditOrg';
 import { useOrganizations } from '@/services/org';
 
 /**
 *   门店信息
 */
 const Org = () => {
-    const [state, setState] = useState();
     const { loading, data, page, refetch } = useOrganizations();
-    useEffect(() => {
-        console.log(state, setState);
-    }, []);
+    const [showEdit, setShowEdit] = useState(false);
     const addInfoHandler = () => {
-        
-    }
+        setCurId('');
+        setShowEdit(true);
+    };
+
+    const [curId, setCurId] = useState('');
+
+    const onCloseHandler = () => {
+        setShowEdit(false);
+        refetch();
+      };
+
+    const editInfoHandler = (id: string) => {
+        console.log(id);
+    };
+    
+    const delInfoHandler = async (id: string) => {
+        console.log(id);
+    };
+    const dataSource = data?.map((item) => ({
+        ...item,
+        key: item.id,
+        subTitle: <div>{item.tags?.split(',').map((tag) => (<Tag key={tag} color="#5BD8A6">{tag}</Tag>))}</div>,
+        actions: [
+            <><a onClick={() => editInfoHandler(item.id)}>编辑</a><a onClick={() => delInfoHandler(item.id)}>删除</a></>
+        ],
+        content: item.address,
+    }));
+
+    const onPageChangeHandler = (pageNum: number, pageSize: number) => {
+        refetch({
+            page: {
+            pageNum,
+            pageSize,
+            },
+        });
+    };
 
     return (
         <div className={styles.container}>
@@ -30,10 +61,10 @@ const Org = () => {
                     title: '门店管理',
                 }}
                 extra={[
-                    <Button key="1" type="primary" onClick={addInfoHandler}></Button>
+                    <Button key="1" type="primary" onClick={addInfoHandler}>新增门店</Button>
                 ]}
             >
-            <ProList<any>
+            <ProList
                 pagination={{
                     defaultPageSize: DEFAULT_PAGE_SIZE,
                     showSizeChanger: false,

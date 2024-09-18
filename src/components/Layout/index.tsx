@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-
 import { MenuDataItem, ProLayout } from '@ant-design/pro-components';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import style from './index.module.less'
@@ -30,7 +28,7 @@ const Layout = () => {
     }
     return (
         <ProLayout
-            siderWidth={130}
+            siderWidth={150}
             layout='mix'
             avatarProps={{
                 src: store.avatar || null,

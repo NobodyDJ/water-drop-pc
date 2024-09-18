@@ -30,7 +30,6 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
     [ROUTE_KEY.Org]: {
         path: 'org',
         name: '门店信息',
-        hideInMenu: true,
         icon: <ShopOutlined/>
     },
     [ROUTE_KEY.NotFound]: {
