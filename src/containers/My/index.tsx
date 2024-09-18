@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { PageContainer, ProForm, ProFormInstance, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
-import { App, Col, Row, Space } from 'antd';
+import { App, Col, Row } from 'antd';
 import OSSImageUpload from '@/components/OSSImageUpload';
 import { useUserContext } from '@/hooks/userHooks';
 import { useMutation } from '@apollo/client';
