@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useMemo } from 'react';
 
 import style from './index.module.less';
-import { Col, Divider, Drawer, Form, Input, Row, Select } from 'antd';
+import { Col, Divider, Drawer, Form, Input, Row, Select, Spin } from 'antd';
 import OSSImageUpload from '@/components/OSSImageUpload';
+import { useOrganization } from '@/services/org';
 
 interface IProp{
     id: string;
@@ -17,12 +18,21 @@ const EditOrg = ({
     onClose
 }: IProp) => {
     const [form] = Form.useForm();
-    useEffect(() => {
-        console.log(id, onClose);
-    }, []);
+    const { data, loading: queryLoading } = useOrganization(id);
+    const initValue = useMemo(() => {
+        return data ? {
+            ...data,
+            tags: data.tags?.split(','),
+        } : {}
+    }, [data])
+    
+    if (queryLoading) {
+        return <Spin />;
+    }
+
     return (<Drawer
-        title="Basic Drawer"
-        closable={false}
+        title="编辑门店信息"
+        width="70vw"
         onClose={onClose}
         open
       >
