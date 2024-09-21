@@ -4,23 +4,23 @@ import {
     PageContainer,
     ProList,
   } from '@ant-design/pro-components';
-  import { Button, Tag } from 'antd';
+  import { Button, Popconfirm, Tag } from 'antd';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import EditOrg from './components/EditOrg';
-import { useOrganizations } from '@/services/org';
+import { useDeleteOrg, useOrganizations } from '@/services/org';
 
 /**
 *   门店信息
 */
 const Org = () => {
     const { loading, data, page, refetch } = useOrganizations();
+    const [delHandler, delLoading] = useDeleteOrg();
     const [showEdit, setShowEdit] = useState(false);
+    const [curId, setCurId] = useState('');
     const addInfoHandler = () => {
         setCurId('');
         setShowEdit(true);
     };
-
-    const [curId, setCurId] = useState('');
 
     const onCloseHandler = () => {
         setShowEdit(false);
@@ -28,18 +28,26 @@ const Org = () => {
       };
 
     const editInfoHandler = (id: string) => {
-        console.log(id);
+        setCurId(id);
+        setShowEdit(true);
     };
     
     const delInfoHandler = async (id: string) => {
-        console.log(id);
+        delHandler(id, refetch);
     };
     const dataSource = data?.map((item) => ({
         ...item,
         key: item.id,
         subTitle: <div>{item.tags?.split(',').map((tag) => (<Tag key={tag} color="#5BD8A6">{tag}</Tag>))}</div>,
         actions: [
-            <><a onClick={() => editInfoHandler(item.id)}>编辑</a><a onClick={() => delInfoHandler(item.id)}>删除</a></>
+            <Button type="link" onClick={() => editInfoHandler(item.id)}>编辑</Button>,
+            <Popconfirm
+                title="提醒"
+                description={`确定要删除 ${item.name} 吗？`}
+                onConfirm={() => delInfoHandler(item.id)}
+            >
+                <Button type="link" loading={delLoading}>删除</Button>
+            </Popconfirm>,
         ],
         content: item.address,
     }));

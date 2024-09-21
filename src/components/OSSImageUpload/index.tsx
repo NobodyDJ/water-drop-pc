@@ -1,10 +1,8 @@
-import React, { useRef } from 'react';
 import type { UploadFile, UploadProps } from 'antd';
-import { Button, Upload } from 'antd';
+import { Upload } from 'antd';
 import { useQuery } from '@apollo/client';
 import { GET_OSS_INFO } from '@/graphgql/oss';
 import ImgCrop from 'antd-img-crop';
-import { UploadOutlined } from '@ant-design/icons';
 
 interface OSSDataType {
   dir: string;
@@ -17,42 +15,40 @@ interface OSSDataType {
 
 // 单个文件上传
 interface OSSUploadProps {
-  value?: UploadFile;
-  onChange?: (fileList: UploadFile) => void;
+    value?: UploadFile[];
+    label?: string;
+    maxCount?: number;
+    imgCropAspect?: number;
+    onChange?: (fileList: UploadFile[]) => void;
 }
 
-const OSSImageUpload = ({ value, onChange }: OSSUploadProps) => {
+const UploadImage = ({label, maxCount, value, imgCropAspect, onChange }: OSSUploadProps) => {
     // 泛型确定数据返回类型
     const { data, refetch } = useQuery<{ getOSSInfo: OSSDataType }>(GET_OSS_INFO);
-    const key = useRef('');// 生成一个初始值
   // Mock get OSS api
   // https://help.aliyun.com/document_detail/31988.html
     const OSSData = data?.getOSSInfo;
 
-    const handleChange: UploadProps['onChange'] = ({ file }) => {
-        const newFile = {
-            ...file,
-            url: `${OSSData?.host}/${key.current}`
-        }
-        onChange?.(newFile);
-    };
+    const getKey = (file: UploadFile) => {
+        const suffix = file.name.slice(file.name.lastIndexOf('.'));
+        const key = `${OSSData?.dir}${file.uid}${suffix}`;
+        const url = `${OSSData?.host}/${key}`;
+        return {key, url}
+    }
 
-    const handleRemove = (file: UploadFile) => {
-        const newFile = {
-            ...file,
-            url: ''
-        };
-
+    const handleChange: UploadProps['onChange'] = ({ fileList }) => {
+        const newFile = fileList.map((file) => {
+            return {
+                ...file,
+                url: file.url || getKey(file).url
+            }
+        })
         onChange?.(newFile);
     };
 
     const getExtraData: UploadProps['data'] = (file) => {
-        // 获取文件的后缀
-        const suffix = file.name.slice(file.name.lastIndexOf('.'));
-        const filename = Date.now() + suffix;
-        key.current = `${OSSData?.dir}${filename}`
         return {
-            key: key.current,
+            key: getKey(file).key,
             OSSAccessKeyId: OSSData?.accessId,
             policy: OSSData?.policy,
             Signature: OSSData?.signature,
@@ -78,21 +74,21 @@ const OSSImageUpload = ({ value, onChange }: OSSUploadProps) => {
     };
 
     return (
-        <ImgCrop rotationSlider>
+        <ImgCrop rotationSlider aspect={imgCropAspect ? imgCropAspect : 1}>
             <Upload
                 name="file"
                 listType="picture-card"
-                fileList={value ? [value] : []}
+                maxCount={maxCount? maxCount : 1}
+                fileList={value ? value : []}
                 action={OSSData?.host}
                 onChange={handleChange}
-                onRemove={handleRemove}
                 data={getExtraData}
                 beforeUpload={beforeUpload}
-        >
-            + 替换头像
-        </Upload>
+            >
+                + {label ? label : '上传图片'}
+            </Upload>
         </ImgCrop>
     );
 };
 
-export default OSSImageUpload;
+export default UploadImage;

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { PageContainer, ProForm, ProFormInstance, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { App, Col, Row } from 'antd';
-import OSSImageUpload from '@/components/OSSImageUpload';
+import UploadImage from '@/components/OSSImageUpload';
 import { useUserContext } from '@/hooks/userHooks';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER } from '@/graphgql/user';
@@ -25,9 +25,9 @@ const My = () => {
             tel: store.tel,
             name: store.name,
             desc: store.desc,
-            avatar: {
-                url: store.avatar
-            }
+            avatar: [
+                { url: store.avatar || '' }
+            ]
         })
     }, [store]);
     return (
@@ -50,7 +50,7 @@ const My = () => {
                             params: {
                                 name: values.name,
                                 desc: values.desc,
-                                avatar: values.avatar?.url || ''
+                                avatar: values.avatar[0]?.url || ''
                             }
                         }
                     })
@@ -83,7 +83,7 @@ const My = () => {
                     </Col>
                     <Col>
                         <FormItem className={styles.avatar } name="avatar">
-                            <OSSImageUpload />
+                            <UploadImage label="更改头像" />
                         </FormItem>
                     </Col>
                 </Row>

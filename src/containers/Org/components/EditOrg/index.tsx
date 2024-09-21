@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
 
 import style from './index.module.less';
-import { Col, Divider, Drawer, Form, Input, Row, Select, Spin } from 'antd';
+import { Button, Col, Divider, Drawer, Form, Input, Row, Select, Spin, UploadFile } from 'antd';
 import OSSImageUpload from '@/components/OSSImageUpload';
-import { useOrganization } from '@/services/org';
+import { useEditInfo, useOrganization } from '@/services/org';
+import UploadImage from '@/components/OSSImageUpload';
+import { IOrganization } from '@/utils/types';
 
-//11
 interface IProp{
     id: string;
     onClose: () => void;
@@ -20,13 +21,34 @@ const EditOrg = ({
 }: IProp) => {
     const [form] = Form.useForm();
     const { data, loading: queryLoading } = useOrganization(id);
+    const [edit, loading] = useEditInfo();
     const initValue = useMemo(() => {
         return data ? {
             ...data,
             tags: data.tags?.split(','),
+            logo: [{ url: data.logo }],
+            identityCardBackImg: [{url: data.identityCardBackImg}],
+            identityCardFrontImg: [{url: data.identityCardFrontImg}],
+            businessLicense: [{url: data.businessLicense}]
         } : {}
     }, [data])
-    
+    const onFinishHandler = async () => {
+        const values = await form.validateFields();
+        if (values) {
+            const formData = {
+                ...values,
+                logo: values.logo[0].url,
+                tags: values.tags.join(','),
+                identityCardBackImg: values.identityCardBackImg[0].url,
+                identityCardFrontImg: values.identityCardFrontImg[0].url,
+                businessLicense: values.businessLicense[0].url,
+                orgFrontImg: values?.orgFrontImg?.map((item: UploadFile) => ({ url: item.url })),
+                orgRoomImg: values?.orgRoomImg?.map((item: UploadFile) => ({ url: item.url })),
+                orgOtherImg: values?.orgOtherImg?.map((item: UploadFile) => ({ url: item.url })),
+            } as unknown as IOrganization;
+            await edit(id, formData);
+        }
+    }
     if (queryLoading) {
         return <Spin />;
     }
@@ -36,6 +58,15 @@ const EditOrg = ({
         width="70vw"
         onClose={onClose}
         open
+        footer={(
+            <Button
+                loading={loading}
+                type="primary"
+                onClick={onFinishHandler}
+            >
+                保存
+            </Button>
+        )}
       >
         <Form form={form} initialValues={initValue} layout="vertical">
             <Row className={style.row} gutter={20}>

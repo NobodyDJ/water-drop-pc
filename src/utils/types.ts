@@ -49,6 +49,10 @@ export interface IOrganization {
     businessLicense:string
 }
 
+// IOrganization中的所有属性均是可选属性
+// type开头的一律用T开头
+export type TBaseOrganization = Partial<IOrganization>;
+
 // __typename?: 'Query'：可选字段，表示类型名为 'Query'。这是 GraphQL 查询中特有的类型标识符，用来明确查询返回的类型。
 export type TOrgsQuery = { [key: string]: { __typename?: 'Query', data: IOrganization[], page: IPage } };
 

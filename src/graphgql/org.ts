@@ -1,55 +1,75 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_ORGS = gql`
-    query getOrganizations($page: PageInput!){
-        getOrganizations(page: $page){
-            code
-            message
-            data{
-                id
-                name
-                address
-                orgFrontImg{
-                    id,
-                    url
-                }
-            }
-            page{
-                pageNum
-                pageSize
-                total
-            }
-        }
+  query getOrganizations($page: PageInput!) {
+    getOrganizations(page: $page){
+      code
+      message
+      page {
+        total
+        pageNum
+        pageSize
+      }
+      data {
+        id
+        logo
+        name
+        address
+        tags
+      }
     }
-`
+  }
+`;
 
 export const GET_ORG = gql`
-query getOrganizationInfo($id: String!) {
+query getOrganizationInfo(
+  $id: String!
+  ) {
     getOrganizationInfo(id: $id) {
-        data {
-                description
-                name
-                tags
-                id
-            orgFrontImg {
-                url
-            }
-            orgRoomImg {
-                url
-            }
-            orgOtherImg {
-                url
-            }
-            logo
-            address
-            tel
-            longitude
-            latitude
-            identityCardBackImg
-            identityCardFrontImg
-            businessLicense
+      data {
+        description
+        name
+        tags
+        id
+        orgFrontImg {
+          url
         }
-        code
-        message
+        orgRoomImg {
+          url
+        }
+        orgOtherImg {
+          url
+        }
+        logo
+        address
+        tel
+        longitude
+        latitude
+        identityCardBackImg
+        identityCardFrontImg
+        businessLicense
+      }
+      code
+      message
+  }
+}
+`;
+
+export const COMMIT_ORG = gql`
+  mutation commitOrganizationInfo($params: OrganizationInput!, $id: String) {
+    commitOrganizationInfo(params: $params, id: $id) {
+      code
+      message
     }
-`
+  }
+`;
+
+
+export const DEL_ORG = gql`
+  mutation deleteOrganization($id: String!) {
+    deleteOrganization(id: $id) {
+      code
+      message
+    }
+  }
+`;
