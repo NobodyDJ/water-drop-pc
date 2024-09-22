@@ -11,7 +11,7 @@ interface IRoute{
 export const ROUTE_KEY = {
     HOME: 'home',
     MY: 'my',
-    Org: 'org',
+    ORG: 'org',
     NotFound: 'NotFound',
   };
 
@@ -27,9 +27,10 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
         hideInMenu: true,
         icon: <HomeOutlined/>
     },
-    [ROUTE_KEY.Org]: {
+    [ROUTE_KEY.ORG]: {
         path: 'org',
         name: '门店信息',
+        hideInMenu: true,
         icon: <ShopOutlined/>
     },
     [ROUTE_KEY.NotFound]: {

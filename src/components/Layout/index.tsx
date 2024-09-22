@@ -4,9 +4,10 @@ import style from './index.module.less'
 import { useUserContext } from '@/hooks/userHooks';
 import { ROUTE_KEY, routes } from '@/routes/menus';
 import { AUTH_TOKEN } from '@/utils/constants';
-import { Space } from 'antd';
-import { LogoutOutlined } from '@ant-design/icons';
+import { Space, Tooltip } from 'antd';
+import { LogoutOutlined, ShopOutlined } from '@ant-design/icons';
 import { useGoTo } from '@/hooks';
+import OrgSelect from '../OrgSelect';
 
 
 const menuItemRender = (
@@ -25,6 +26,9 @@ const Layout = () => {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, '');
         nav('/login');
+    }
+    const goToOrg = () => {
+        go(ROUTE_KEY.ORG);
     }
     return (
         <ProLayout
@@ -50,7 +54,15 @@ const Layout = () => {
                 children: routes
             }}
             menuItemRender={menuItemRender}
-            onMenuHeaderClick={()=>nav('/')}
+            onMenuHeaderClick={() => nav('/')}
+            actionsRender={
+                () => [
+                    <OrgSelect />,
+                    <Tooltip title="门店管理">
+                        <ShopOutlined onClick={goToOrg}/>
+                    </Tooltip>
+                ]
+            }
         >
             {/* 此处使用useOutLet的hook也可以实现相同功能 */}
             <Outlet></Outlet>

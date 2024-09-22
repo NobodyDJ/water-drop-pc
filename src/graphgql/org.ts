@@ -73,3 +73,16 @@ export const DEL_ORG = gql`
     }
   }
 `;
+
+export const GET_SAMPLE_ORGS = gql`
+  query getOrganizations($page: PageInput!, $name: String) {
+    getOrganizations(page: $page, name: $name){
+      code
+      message
+      data {
+        id
+        name
+      }
+    }
+  }
+`;

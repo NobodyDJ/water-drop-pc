@@ -1,17 +1,21 @@
-import { COMMIT_ORG, DEL_ORG, GET_ORG, GET_ORGS } from "@/graphgql/org"
+import { COMMIT_ORG, DEL_ORG, GET_ORG, GET_ORGS, GET_SAMPLE_ORGS } from "@/graphgql/org"
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { TBaseOrganization, TOrgQuery, TOrgsQuery } from "@/utils/types";
 import { useMutation, useQuery } from "@apollo/client"
 import { message } from "antd";
 
 // 获取一组部门，数组形式
-export const useOrganizations = (pageNum: number = 1, pageSize: number = DEFAULT_PAGE_SIZE) => {
-    const { loading, data, refetch } = useQuery<TOrgsQuery>(GET_ORGS, {
+export const useOrganizations = (
+    pageNum: number = 1,
+    pageSize: number = DEFAULT_PAGE_SIZE,
+    isSample: boolean = false,
+) => {
+    const { loading, data, refetch } = useQuery<TOrgsQuery>(isSample ? GET_SAMPLE_ORGS : GET_ORGS, {
         variables: {
             page: {
                 pageNum,
                 pageSize,
-            }
+            },
         },
     });
     return {
