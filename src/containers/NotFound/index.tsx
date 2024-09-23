@@ -11,7 +11,7 @@ const NotFound = () => {
         <Result
         status="404"
         title="404"
-        subTitle="Sorry, the page you visited does not exist."
+        subTitle="抱歉您所访问的页面不存在。"
         extra={<Button type="primary">返回首页</Button>}
         />
     );

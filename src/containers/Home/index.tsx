@@ -11,7 +11,6 @@ import { ROUTE_KEY } from '@/routes/menus';
 const Home = () => {
     const { store } = useUserContext();
     const { go } = useGoTo()
-    console.log('store', store);
     return (<div className={style.container}>
         {store.tel}
         <Button onClick={()=>go(ROUTE_KEY.MY)}>

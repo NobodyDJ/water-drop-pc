@@ -9,7 +9,13 @@ const getCxtProvider = (
 ) => ({ children }: IPropChild) => {
     const [store, setStore] = useState(defaultValue);
     const value = useMemo(() => ({
-        key, store, setStore
+        // 实现一个增量更新，setState传入一个函数的第一个参数state表示先前更新state的值
+        key, store, setStore: (payload: any) => setStore((prevState) => {
+            return {
+                ...prevState,
+                ...payload
+            }
+        })
     }), [store])
     return (
         <AppContext.Provider
