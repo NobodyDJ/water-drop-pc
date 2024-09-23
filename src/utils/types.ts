@@ -1,7 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 export interface IPropChild{
     children: React.ReactNode
 }
+
+export interface IStore<T>{
+    key: string;
+    store: T;
+    setStore: (payload: Partial<T >) => void;
+}
+
 
 export interface IUser {
     id: string;
@@ -19,10 +26,10 @@ export interface IPage {
     total: number;
 }
 
-export interface IStore{
+export interface IStore<T>{
     key: string;
-    store: Record<string, any>;
-    setStore: (payload: Record<string, any>) => void;
+    store: T;
+    setStore: (payload: Partial<T >) => void;
 }
 
 export interface IMedia {

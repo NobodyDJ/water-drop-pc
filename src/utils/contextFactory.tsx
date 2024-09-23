@@ -2,37 +2,38 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import { IPropChild, IStore } from "./types";
 
-const getCxtProvider = (
+function getCxtProvider<T>(
     key: string,
-    defaultValue: Record<string, any>,
-    AppContext: React.Context<IStore>,
-) => ({ children }: IPropChild) => {
-    const [store, setStore] = useState(defaultValue);
-    const value = useMemo(() => ({
-        // 实现一个增量更新，setState传入一个函数的第一个参数state表示先前更新state的值
-        key, store, setStore: (payload: any) => setStore((prevState) => {
-            return {
+    defaultValue: T,
+    AppContext: React.Context<IStore<T>>,
+) {
+    return ({ children }: IPropChild) => {
+        const [store, setStore] = useState(defaultValue);
+        const value = useMemo(() => ({
+            // 实现一个增量更新，setState传入一个函数的第一个参数state表示先前更新state的值
+            key, store, setStore: (payload: any) => setStore((prevState) => ({
                 ...prevState,
                 ...payload
-            }
-        })
-    }), [store])
-    return (
-        <AppContext.Provider
-            value={value}
-        >
-            {children}
-        </AppContext.Provider>
-    )
+            }))
+        }), [store])
+        return (
+            <AppContext.Provider
+                value={value}
+            >
+                {children}
+            </AppContext.Provider>
+        )
+    }
 }
 
 const cxtCache: Record<string, Cxt> = {};
 
-class Cxt{
-    defaultStore: IStore;
-    AppContext: React.Context<IStore>;
+// 给定一个默认值不然常量cxtCache会报错
+class Cxt<T = any>{
+    defaultStore: IStore<T>;
+    AppContext: React.Context<IStore<T>>;
     Provider: ({ children }: IPropChild) => JSX.Element;
-    constructor(key: string, defaultValue: Record<string, any>) {
+    constructor(key: string, defaultValue: T) {
         this.defaultStore = {
             key,
             store: defaultValue,
@@ -46,8 +47,8 @@ class Cxt{
 }
 
 // 封装了获取具体全局变量的hooks
-export const useAppContext = (key: string)=> {
-    const cxt = cxtCache[key];
+export function useAppContext<T>(key: string){
+    const cxt = cxtCache[key] as Cxt<T>;
     // useContext返回的数据结构为{ key, store, setStore }
     // 因为AppContext.Provider组件提供的value包含这些值
     const app = useContext(cxt.AppContext);
@@ -58,16 +59,16 @@ export const useAppContext = (key: string)=> {
 }
 
 // 返回具体子组件
-export const connectFactory = (
+export function connectFactory<T> (
     key: string,
-    defaultValue: Record<string, any>
-) => {
+    defaultValue: T
+) {
     const cxt = cxtCache[key];
-    let CurCxt: Cxt;
+    let CurCxt: Cxt<T>;
     if (cxt) {
         CurCxt = cxt;
     } else {
-        CurCxt = new Cxt(key, defaultValue);
+        CurCxt = new Cxt<T>(key, defaultValue);
     }
     // 注意这里需要返回React.ReactNode的数据格式
     return (Child: React.FunctionComponent<any>) => (props: any)=>(
