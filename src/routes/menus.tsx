@@ -1,4 +1,4 @@
-import { HomeOutlined, ShopOutlined } from '@ant-design/icons'
+import { HomeOutlined, ShopOutlined, TeamOutlined } from '@ant-design/icons'
 
 // 定义路由的数据结构
 interface IRoute{
@@ -13,6 +13,7 @@ export const ROUTE_KEY = {
     MY: 'my',
     ORG: 'org',
     NO_ORG: 'noOrg',
+    STUDENT: 'student',
     NotFound: 'NotFound',
   };
 
@@ -38,6 +39,11 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
         path: 'noOrg',
         name: '选择门店提示',
         hideInMenu: true,
+    },
+    [ROUTE_KEY.STUDENT]: {
+        path: 'student',
+        name: '学员管理',
+        icon: <TeamOutlined />
     },
     [ROUTE_KEY.NotFound]: {
         path: '*',
