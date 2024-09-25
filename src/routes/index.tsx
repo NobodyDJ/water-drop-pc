@@ -5,6 +5,7 @@ import NotFound from "@/containers/NotFound";
 import Org from "@/containers/Org";
 import NoOrg from "@/containers/NoOrg";
 import Student from "@/containers/Student";
+import Course from "@/containers/Course";
 
 export const ROUTE_COMPONENT = {
     [ROUTE_KEY.HOME]: Home,
@@ -12,5 +13,6 @@ export const ROUTE_COMPONENT = {
     [ROUTE_KEY.ORG]: Org,
     [ROUTE_KEY.NO_ORG]: NoOrg,
     [ROUTE_KEY.STUDENT]: Student,
+    [ROUTE_KEY.Course]: Course,
     [ROUTE_KEY.NotFound]: NotFound
 }

@@ -74,4 +74,18 @@ export interface IStudent{
     tel: string;
 }
 
-export type TStudentQuery = { [key: string]: { __typename?: 'Query', data: IStudent[], page: IPage }};
+export type TStudentQuery = { [key: string]: { __typename?: 'Query', data: IStudent[], page: IPage } };
+
+export interface ICourse{
+    name: string;
+    desc: string;
+    group: string;
+    baseAbility: string;
+    limitNumber: number;
+    duration: number;
+    reserveInfo: string;
+    refundInfo: string;
+    otherInfo: string;
+}
+
+export type TCoursesQuery = { [key: string]: { __typename?: 'Query', data: ICourse[], page: IPage } };

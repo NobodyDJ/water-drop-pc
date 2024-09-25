@@ -55,7 +55,6 @@ const My = () => {
                         }
                     })
                     if (res.data.updateUserInfo.code === 200) {
-                        store.refetchHandler();
                         message.success(res.data.updateUserInfo.message);
                         return
                     }
