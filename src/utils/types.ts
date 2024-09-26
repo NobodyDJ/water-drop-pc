@@ -77,6 +77,7 @@ export interface IStudent{
 export type TStudentQuery = { [key: string]: { __typename?: 'Query', data: IStudent[], page: IPage } };
 
 export interface ICourse{
+    id: string;
     name: string;
     desc: string;
     group: string;
@@ -88,4 +89,8 @@ export interface ICourse{
     otherInfo: string;
 }
 
+export type TBaseCourse = Partial<ICourse>;
+
 export type TCoursesQuery = { [key: string]: { __typename?: 'Query', data: ICourse[], page: IPage } };
+
+export type TCourseQuery = { [key: string]: { __typename?: 'Query', data: ICourse } };
