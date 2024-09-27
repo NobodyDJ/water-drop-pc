@@ -1,15 +1,13 @@
-import { ICourse } from "@/utils/types";
+import { ICourse, IProps } from "@/utils/types";
 import { ProColumns } from "@ant-design/pro-components";
 import { Button } from "antd";
 
-interface IProps {
-  onEditHandler: (id: string) => void
-}
-
 export const getColumns: ({
-  onEditHandler
+  onEditHandler,
+  onOrderTimeHandler
 }: IProps) => ProColumns<ICourse, 'text'>[] = ({
   onEditHandler,
+  onOrderTimeHandler
 }) => [
   {
     title: '课程标题',
@@ -32,14 +30,23 @@ export const getColumns: ({
     title: '操作',
     valueType: 'option',
     dataIndex: 'id',
-    width: 100,
-    render: (text, entity) => (
+    width: 200,
+    align: 'center',
+    render: (text, entity) => [
       <Button
+        key="edit"
         type="link"
         onClick={() => onEditHandler(entity.id)}
       >
         编辑
+      </Button>,
+      <Button
+        key="orderTime"
+        type="link"
+        onClick={() => onOrderTimeHandler(entity.id)}
+      >
+        可约时间
       </Button>
-    ),
+    ]
   },
 ]

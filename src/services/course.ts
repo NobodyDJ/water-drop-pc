@@ -1,10 +1,10 @@
 import { COMMIT_COURSE, GET_COURSE, GET_COURSES } from "@/graphgql/course";
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
-import { TBaseCourse, TCoursesQuery } from "@/utils/types";
+import { TBaseCourse, TCourseQuery, TCoursesQuery } from "@/utils/types";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { message } from "antd";
 
-// 获取一组部门，数组形式
+// 获取一组课程，数组形式
 export const useCourses = (
     pageNum: number = 1,
     pageSize: number = DEFAULT_PAGE_SIZE,
@@ -54,9 +54,9 @@ export const useCourses = (
 
 // 编辑部门信息
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useEditInfo = (): [handleEdit: any, loading: boolean] => {
+export const useEditCourseInfo = (): [handleEdit: any, loading: boolean] => {
     const [edit, { loading }] = useMutation(COMMIT_COURSE);
-    const handleEdit = async (id: string, params: TBaseCourse, callback: (isReload: boolean)=> void) => {
+    const handleEdit = async (id: string, params: TBaseCourse, callback: ()=> void) => {
         const res = await edit({
             variables: {
                 id,
@@ -65,7 +65,7 @@ export const useEditInfo = (): [handleEdit: any, loading: boolean] => {
         })
         if (res.data.commitCourseInfo.code === 200) {
             message.success(res.data.commitCourseInfo.message);
-            callback(true)
+            callback()
             return;
         }
         message.error(res.data.commitCourseInfo.message);
@@ -73,13 +73,12 @@ export const useEditInfo = (): [handleEdit: any, loading: boolean] => {
     return [handleEdit, loading];
 }
 
-// 获取部门信息
+// 获取课程信息
 export const useCourse = () => {
-    // const { data, refetch } = useQuery<TCourseQuery>(GET_COURSE, {
-    //     skip: true
-    // });
+    // 在组件渲染的时候不立即发送请求。
+    // 而是通过获取get方法，通过点击调用请求方法
     const [get, { loading }] = useLazyQuery(GET_COURSE);
-
+    // id不发生变化调用接口不会发生
     const getCourse = async (id: string) => {
         const res = await get({
             variables: {
@@ -91,5 +90,19 @@ export const useCourse = () => {
     return {
         loading,
         getCourse,
+    }
+}
+
+// 获取课程信息 及时获取课程信息
+export const useCourseInfo = (id: string) => {
+    const { data, loading, refetch } = useQuery<TCourseQuery>(GET_COURSE, {
+        variables: {
+            id,
+        },
+    });
+    return {
+        data: data?.getCourseInfo.data,
+        loading,
+        refetch
     }
 }

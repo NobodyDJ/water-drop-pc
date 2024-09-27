@@ -7,6 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useRef, useState } from 'react';
 import EditCourse from './components/EditCourse';
+import OrderTime from './components/OrderTime';
 
 /**
 *   课程信息
@@ -15,6 +16,7 @@ const Course = () => {
     const { data, refetch } = useCourses();
     const [showInfo, setShowInfo] = useState(false);
     const [curId, setCurId] = useState('');
+    const [showOrderTime, setShowOrderTime] = useState(false);
     const actionRef = useRef<ActionType>();
     const onClickHandler = (id?: string) => {
         if (id) {
@@ -30,6 +32,14 @@ const Course = () => {
             actionRef.current?.reload(); // 使用此方法调用的数据，是不会把数据传递给表格组件，需要调用表格的刷新组件，实时获取数据
         }
     }
+    const onOrderTimeHandler = (id: string) => {
+        if (id) {
+            setCurId(id);
+        } else {
+            setCurId('');
+        }
+        setShowOrderTime(true);
+    }
     return (
         <PageContainer
             header={{
@@ -39,7 +49,8 @@ const Course = () => {
             <ProTable<ICourse>
                 rowKey='id'
                 columns={getColumns({
-                    onEditHandler: onClickHandler
+                    onEditHandler: onClickHandler,
+                    onOrderTimeHandler
                 })}
                 dataSource={data}
                 pagination={{
@@ -51,7 +62,8 @@ const Course = () => {
                 ]}
                 actionRef={actionRef}
             />
-            <EditCourse id={ curId } open={showInfo} onClose={(isReload: boolean)=>closeAndFetchHandler(isReload)} />
+            <EditCourse id={curId} open={showInfo} onClose={(isReload: boolean) => closeAndFetchHandler(isReload)} />
+            <OrderTime id={curId} open={showOrderTime} onClose={()=>onOrderTimeHandler}/>
         </PageContainer>
     );
 };

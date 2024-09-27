@@ -76,6 +76,7 @@ export interface IStudent{
 
 export type TStudentQuery = { [key: string]: { __typename?: 'Query', data: IStudent[], page: IPage } };
 
+// 课程预约周
 export interface ICourse{
     id: string;
     name: string;
@@ -87,6 +88,7 @@ export interface ICourse{
     reserveInfo: string;
     refundInfo: string;
     otherInfo: string;
+    reducibleTime: IWeekCourse[];
 }
 
 export type TBaseCourse = Partial<ICourse>;
@@ -94,3 +96,57 @@ export type TBaseCourse = Partial<ICourse>;
 export type TCoursesQuery = { [key: string]: { __typename?: 'Query', data: ICourse[], page: IPage } };
 
 export type TCourseQuery = { [key: string]: { __typename?: 'Query', data: ICourse } };
+
+export type TWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export interface IDay {
+    key: TWeek;
+    label: string;
+  }
+  
+export const DAYS: IDay[] = [
+    {
+        key: 'monday',
+        label: '周一',
+    },
+    {
+        key: 'tuesday',
+        label: '周二',
+    },
+    {
+        label: '周三',
+        key: 'wednesday',
+    },
+    {
+        label: '周四',
+        key: 'thursday',
+    },
+    {
+        label: '周五',
+        key: 'friday',
+    },
+    {
+        label: '周六',
+        key: 'saturday',
+    },
+    {
+        label: '周日',
+        key: 'sunday',
+    },
+];
+
+export interface IOrderTime{
+    startTime: string;
+    endTime: string;
+    key: number;
+}
+
+export interface IWeekCourse{
+    week: TWeek;
+    orderTime: IOrderTime[];
+}
+
+export interface IProps {
+    onEditHandler: (id: string) => void,
+    onOrderTimeHandler: (id: string) =>void
+  }
