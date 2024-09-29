@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IOrderTime } from '@/utils/types';
 import { ProColumns } from '@ant-design/pro-components';
 import { Button, Popconfirm, Space } from 'antd';
+import dayjs from 'dayjs';
 
-export const getColumns = (onDeleteHandler: () => void): ProColumns[] => [
+export const getColumns = (onDeleteHandler: (key: number) => void): ProColumns[] => [
   {
     title: '序号',
     dataIndex: 'key',
@@ -15,6 +18,10 @@ export const getColumns = (onDeleteHandler: () => void): ProColumns[] => [
     valueType: 'time',
     width: 160,
     align: 'center',
+    render: (text: any) => {
+      const date = dayjs(text);
+      return date.isValid() ? date.format('HH:mm:ss') : text;
+    }
   },
   {
     title: '结束时间',
@@ -22,6 +29,10 @@ export const getColumns = (onDeleteHandler: () => void): ProColumns[] => [
     valueType: 'time',
     width: 160,
     align: 'center',
+    render: (text: any) => {
+      const date = dayjs(text);
+      return date.isValid() ? date.format('HH:mm:ss') : text;
+    }
   },
   {
     title: '操作',
@@ -43,7 +54,7 @@ export const getColumns = (onDeleteHandler: () => void): ProColumns[] => [
         <Popconfirm
           title="提醒"
           description="确认要删除吗"
-          onConfirm={()=>onDeleteHandler()}
+          onConfirm={ () => onDeleteHandler(record.key) }
         >
           <Button
             key="delete"
@@ -56,3 +67,13 @@ export const getColumns = (onDeleteHandler: () => void): ProColumns[] => [
     ]
   }
 ]
+
+export const isWorkDay = (day: string) => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].includes(day);
+
+export const getMaxKey = (orderTime: IOrderTime[] | undefined): number => {
+  const keys = orderTime?.map((item) => item.key) || [];
+  if (keys.length === 0) {
+    return 0;
+  }
+  return Math.max(...keys);
+};

@@ -62,8 +62,9 @@ const Course = () => {
                 ]}
                 actionRef={actionRef}
             />
-            <EditCourse id={curId} open={showInfo} onClose={(isReload: boolean) => closeAndFetchHandler(isReload)} />
-            <OrderTime id={curId} open={showOrderTime} onClose={()=>onOrderTimeHandler}/>
+            {/* 组件按需加载不需要同时加载 */}
+            { showInfo && <EditCourse id={curId} onClose={(isReload: boolean) => closeAndFetchHandler(isReload)} />}
+            { showOrderTime && <OrderTime id={curId} onClose={() => onOrderTimeHandler} />}
         </PageContainer>
     );
 };

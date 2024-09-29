@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 interface IProps{
     id?: string;
     onClose: (isReload: boolean) => void;
-    open: boolean
 }
 
 /**
@@ -15,7 +14,6 @@ interface IProps{
 */
 const EditCourse = ({
     id,
-    open,
     onClose,
 }: IProps) => {
     const [form] = Form.useForm();
@@ -42,7 +40,7 @@ const EditCourse = ({
         <Drawer
             title={id ? '编辑课程' : '添加课程'}
             width={720}
-            open={open}
+            open
             onClose={() => onClose(false)}
             forceRender
             extra={
