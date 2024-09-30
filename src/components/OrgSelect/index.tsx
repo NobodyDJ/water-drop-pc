@@ -7,20 +7,13 @@ import { LOCAL_CURRENT_ORG } from '@/utils/constants';
 import { useEffect, useState } from 'react';
 import { useGoTo } from '@/hooks';
 import { ROUTE_KEY } from '@/routes/menus';
+import { getCurrentOrg } from '@/utils';
 
 /**
 *   门店选择器
 */
 
-// 确保在组件渲染之前就获取到了默认值
-const getCurrentOrg = () => {
-    try {
-        const res = JSON.parse(localStorage.getItem(LOCAL_CURRENT_ORG) || '{}');
-        return res;
-    } catch {
-        return { value: '', label: '' };
-    }
-};
+// 确保在组件渲染之前就获取到了默认值当前组织
 
 const OrgSelect = () => {
     const { data, refetch } = useOrganizations(1, 10, true);
