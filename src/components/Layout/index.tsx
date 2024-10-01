@@ -6,7 +6,7 @@ import { ROUTE_KEY, routes } from '@/routes/menus';
 import { AUTH_TOKEN } from '@/utils/constants';
 import { Space, Tooltip } from 'antd';
 import { LogoutOutlined, ShopOutlined } from '@ant-design/icons';
-import { useGoTo } from '@/hooks';
+import { useGoTo, useIsOrgRoute } from '@/hooks';
 import OrgSelect from '../OrgSelect';
 
 
@@ -22,6 +22,7 @@ const Layout = () => {
     const { store } = useUserContext();
     const nav = useNavigate();
     const { go } = useGoTo();
+    const isOrg = useIsOrgRoute();
     const logout = () => {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, '');
@@ -57,7 +58,7 @@ const Layout = () => {
             onMenuHeaderClick={() => nav('/')}
             actionsRender={
                 () => [
-                    <OrgSelect />,
+                    !isOrg && <OrgSelect />,
                     <Tooltip title="门店管理">
                         <ShopOutlined onClick={goToOrg}/>
                     </Tooltip>
@@ -65,7 +66,10 @@ const Layout = () => {
             }
         >
             {/* 此处使用useOutLet的hook也可以实现相同功能 */}
-            <Outlet></Outlet>
+            {/* 增加一个组件key值可以key值发生变化后，组件重新挂载 */}
+            <div key={store.currentOrg}>
+                <Outlet />
+            </div>
         </ProLayout>
     );
 };

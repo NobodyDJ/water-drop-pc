@@ -1,7 +1,7 @@
 import style from './index.module.less';
 import { Button, Col, Drawer, Form, Input, InputNumber, Row, Space, Spin } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { useCourse, useEditCourseInfo } from '@/services/course';
+import { useCourseInfo, useEditCourseInfo } from '@/services/course';
 import { useEffect } from 'react';
 
 interface IProps{
@@ -18,12 +18,14 @@ const EditCourse = ({
 }: IProps) => {
     const [form] = Form.useForm();
     const [handleEdit] = useEditCourseInfo();
-    const { loading, getCourse } = useCourse();
+    // const { loading, getCourse } = useCourse();
+    const { loading, refetch } = useCourseInfo(id || '');
     useEffect(() => {
         const init = async () => {
+            console.log('id', id);
             if (id) {
-                const res = await getCourse(id);
-                form.setFieldsValue(res);
+                const res = await refetch();
+                form.setFieldsValue(res.data.getCourseInfo.data);
             } else {
                 form.resetFields();
             }

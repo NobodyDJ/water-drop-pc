@@ -2,7 +2,7 @@ import { COMMIT_COURSE, GET_COURSE, GET_COURSES } from "@/graphgql/course";
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { TBaseCourse, TCourseQuery, TCoursesQuery } from "@/utils/types";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { message } from "antd";
+import { App } from "antd";
 
 // 获取一组课程，数组形式
 export const useCourses = (
@@ -56,6 +56,7 @@ export const useCourses = (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useEditCourseInfo = (): [handleEdit: any, loading: boolean] => {
     const [edit, { loading }] = useMutation(COMMIT_COURSE);
+    const { message } = App.useApp();
     const handleEdit = async (id: string, params: TBaseCourse, callback: ()=> void) => {
         const res = await edit({
             variables: {

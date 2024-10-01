@@ -1,4 +1,4 @@
-import { getRouteByKey, routes } from "@/routes/menus";
+import { getRouteByKey, ROUTE_CONFIG, ROUTE_KEY, routes } from "@/routes/menus";
 import { useEffect, useMemo } from "react"
 import { matchPath, useLocation, useNavigate } from "react-router-dom";
 
@@ -43,7 +43,15 @@ export const useGoTo = () => {
 // 获取匹配当前路由的URL
 export const useMatchedRoute = () => {
     const r = useLocation();
-    const route = useMemo(() => routes.find((item) => matchPath(item.path, r.pathname)), [r.pathname]);
-
+    const route = useMemo(() => routes.find((item) => matchPath('/' + item.path, r.pathname)), [r.pathname]);
     return route;
+}
+
+// 判断当前是否为门店路由
+export const useIsOrgRoute = () => {
+    const curRoute = useMatchedRoute();
+    if (curRoute?.path === ROUTE_CONFIG[ROUTE_KEY.ORG].path) {
+        return true
+    }
+    return false
 }
