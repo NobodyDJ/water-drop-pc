@@ -16,7 +16,7 @@ export interface IUser {
     name: string;
     desc: string;
     avatar: string;
-    refetchHandler?: () => void;
+    refetchHandler: () => void;
     currentOrg?: string;
 }
 
@@ -148,5 +148,20 @@ export interface IWeekCourse{
 
 export interface IProps {
     onEditHandler: (id: string) => void,
-    onOrderTimeHandler: (id: string) =>void
-  }
+    onOrderTimeHandler: (id: string) => void,
+    onCardHandler: (id: string) => void,
+}
+
+export interface ICard{
+    id: string;
+    name: string;
+    type: string;
+    time: number;
+    validityDay: number;
+}
+
+export type TBaseCard = Partial<ICard>;
+
+export type TCardsQuery = { [key: string]: { __typename?: 'Query', data: ICard[], page: IPage } };
+
+export type TCardQuery = { [key: string]: { __typename?: 'Query', data: ICard } };

@@ -1,18 +1,18 @@
+import { useGoTo } from '@/hooks';
+import { ROUTE_KEY } from '@/routes/menus';
 import { Button, Result } from 'antd';
-import { useUserContext } from '@/hooks/userHooks';
 
 /**
-*
+*   NotFound
 */
 const NotFound = () => {
-    const { store } = useUserContext();
-    console.log('store', store);
+    const { go } = useGoTo();
     return (
         <Result
         status="404"
         title="404"
         subTitle="抱歉您所访问的页面不存在。"
-        extra={<Button type="primary">返回首页</Button>}
+        extra={<Button type="primary" onClick={()=>go(ROUTE_KEY.HOME)}>返回首页</Button>}
         />
     );
 };

@@ -20,7 +20,6 @@ const My = () => {
     useEffect(() => {
         // 初始化用户信息
         if (!store.tel) return;
-        console.log('store', store);
         formRef.current?.setFieldsValue({
             tel: store.tel,
             name: store.name,
@@ -43,7 +42,6 @@ const My = () => {
                     }
                 }}
                 onFinish={async (values) => {
-                    console.log('values', values);
                     const res = await updateUserInfo({
                         variables: {
                             id: store.id,

@@ -193,7 +193,6 @@ const Page = () => {
                     tel
                   }
                 });
-                console.log('res', res);
                 if (res.data.sendCodeMsg.code === 200) {
                   message.success(res.data.sendCodeMsg.message);
                 } else {

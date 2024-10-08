@@ -16,7 +16,7 @@ import { useOrderTime } from './hooks';
 
 interface IProps{
     id: string;
-    onClose: () => void;
+    onClose: (isReload: boolean) => void;
 }
 
 
@@ -61,8 +61,7 @@ const OrderTime = ({
                 title="编辑预约时间"
                 width={720}
                 open
-                onClose={() => onClose()}
-                forceRender
+                onClose={() => onClose(false)}
             >
                 <Tabs
                     type="card"
@@ -80,7 +79,7 @@ const OrderTime = ({
                             的课开放预约的时间
                         </Space>
                     )}
-                    loading={ editLoading || loadingCourse}
+                    loading={ editLoading || loadingCourse }
                     rowKey="key"
                     value={orderTime}
                     columns={getColumns((key: number) => onDeleteHandler(key))}
@@ -114,7 +113,6 @@ const OrderTime = ({
                         onDelete: async (key) => {
                             onDeleteHandler(key as number);
                         }
-
                     }}
                     recordCreatorProps={{
                         // 增加一个当前行

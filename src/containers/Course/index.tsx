@@ -8,6 +8,7 @@ import { Button } from 'antd';
 import { useRef, useState } from 'react';
 import EditCourse from './components/EditCourse';
 import OrderTime from './components/OrderTime';
+import ConsumerCard from './components/ConsumerCard';
 
 /**
 *   课程信息
@@ -17,8 +18,9 @@ const Course = () => {
     const [showInfo, setShowInfo] = useState(false);
     const [curId, setCurId] = useState('');
     const [showOrderTime, setShowOrderTime] = useState(false);
+    const [showCard, setShowCard] = useState(false);
     const actionRef = useRef<ActionType>();
-    const onClickHandler = (id?: string) => {
+    const onEditHandler = (id?: string) => {
         if (id) {
             setCurId(id);
         } else {
@@ -28,6 +30,8 @@ const Course = () => {
     }
     const closeAndFetchHandler = (isReload: boolean) => {
         setShowInfo(false);
+        setShowOrderTime(false);
+        setShowCard(false);
         if (isReload) {
             actionRef.current?.reload(); // 使用此方法调用的数据，是不会把数据传递给表格组件，需要调用表格的刷新组件，实时获取数据
         }
@@ -40,6 +44,14 @@ const Course = () => {
         }
         setShowOrderTime(true);
     }
+    const onCardHandler = (id: string) => {
+        if (id) {
+            setCurId(id);
+        } else {
+            setCurId('');
+        }
+        setShowCard(true);
+    }
     return (
         <PageContainer
             header={{
@@ -49,8 +61,9 @@ const Course = () => {
             <ProTable<ICourse>
                 rowKey='id'
                 columns={getColumns({
-                    onEditHandler: onClickHandler,
-                    onOrderTimeHandler
+                    onEditHandler,
+                    onOrderTimeHandler,
+                    onCardHandler
                 })}
                 dataSource={data}
                 pagination={{
@@ -58,13 +71,14 @@ const Course = () => {
                 }}
                 request={refetch}
                 toolBarRender={() => [
-                    <Button key="add" onClick={() => onClickHandler()} type="primary" icon={<PlusOutlined/> }>新建</Button>
+                    <Button key="add" onClick={() => onEditHandler()} type="primary" icon={<PlusOutlined/> }>新建</Button>
                 ]}
                 actionRef={actionRef}
             />
             {/* 组件按需加载不需要同时加载 */}
             { showInfo && <EditCourse id={curId} onClose={(isReload: boolean) => closeAndFetchHandler(isReload)} />}
-            { showOrderTime && <OrderTime id={curId} onClose={() => onOrderTimeHandler} />}
+            { showOrderTime && <OrderTime id={curId} onClose={(isReload: boolean) => closeAndFetchHandler(isReload)} />}
+            { showCard && <ConsumerCard id={curId} onClose={(isReload: boolean) => closeAndFetchHandler(isReload)} />}
         </PageContainer>
     );
 };

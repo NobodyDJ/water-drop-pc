@@ -22,7 +22,6 @@ const EditCourse = ({
     const { loading, refetch } = useCourseInfo(id || '');
     useEffect(() => {
         const init = async () => {
-            console.log('id', id);
             if (id) {
                 const res = await refetch();
                 form.setFieldsValue(res.data.getCourseInfo.data);
@@ -44,7 +43,6 @@ const EditCourse = ({
             width={720}
             open
             onClose={() => onClose(false)}
-            forceRender
             extra={
                 <Space>
                     <Button onClick={()=>onClose(false)}>取消</Button>
