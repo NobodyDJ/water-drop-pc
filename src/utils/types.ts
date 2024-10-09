@@ -146,12 +146,6 @@ export interface IWeekCourse{
     orderTime: IOrderTime[];
 }
 
-export interface IProps {
-    onEditHandler: (id: string) => void,
-    onOrderTimeHandler: (id: string) => void,
-    onCardHandler: (id: string) => void,
-}
-
 export interface ICard{
     id: string;
     name: string;
@@ -165,3 +159,24 @@ export type TBaseCard = Partial<ICard>;
 export type TCardsQuery = { [key: string]: { __typename?: 'Query', data: ICard[], page: IPage } };
 
 export type TCardQuery = { [key: string]: { __typename?: 'Query', data: ICard } };
+
+/**
+ * 商品类型
+ */
+export interface IProduct {
+  id: string;
+  limitBuyNumber: number;
+  name: string;
+  coverUrl?: string;
+  bannerUrl?: string;
+  desc: string;
+  originalPrice: number;
+  stock: number;
+  preferentialPrice: number;
+}
+
+export type TBaseProduct = Partial<IProduct>;
+
+export type TProductsQuery = { [key: string]: { __typename?: 'Query', data: IProduct[], page: IPage } };
+
+export type TProductQuery = { [key: string]: { __typename?: 'Query', data: IProduct, page: IPage } };
