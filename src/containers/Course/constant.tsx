@@ -32,13 +32,14 @@ export const getColumns: ({
     title: '操作',
     valueType: 'option',
     dataIndex: 'id',
-    width: 300,
+    width: 220,
     align: 'center',
     render: (text, entity) => [
       <Space key="space" size="small">
         <Button
           key="edit"
           type="link"
+          size="small"
           onClick={() => onEditHandler(entity.id)}
         >
           编辑
@@ -46,6 +47,8 @@ export const getColumns: ({
         <Button
           key="orderTime"
           type="link"
+          size="small"
+
           onClick={() => onOrderTimeHandler(entity.id)}
         >
           可约时间
@@ -53,6 +56,7 @@ export const getColumns: ({
         <Button
           key="card"
           type="link"
+          size="small"
           onClick={() => onCardHandler(entity.id)}
         >
           关联消费卡

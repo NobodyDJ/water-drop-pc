@@ -17,8 +17,8 @@ interface OSSDataType {
 interface OSSUploadProps {
     value?: UploadFile[];
     label?: string;
-    maxCount?: number;
-    imgCropAspect?: number;
+    maxCount?: number; // 最大上传数量
+    imgCropAspect?: number; // 图片比列
     onChange?: (fileList: UploadFile[]) => void;
 }
 

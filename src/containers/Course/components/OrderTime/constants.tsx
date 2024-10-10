@@ -45,6 +45,7 @@ export const getColumns = (onDeleteHandler: (key: number) => void): ProColumns[]
         <Button
           key="edit"
           type="link"
+          size="small"
           onClick={() => {
             action?.startEditable?.(record.key)
           }}
@@ -59,6 +60,7 @@ export const getColumns = (onDeleteHandler: (key: number) => void): ProColumns[]
           <Button
             key="delete"
             type="link"
+            size="small"
           >
             删除
           </Button>

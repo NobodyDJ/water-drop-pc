@@ -2,7 +2,7 @@ import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components'
 import { getColumns } from './constant';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { IProduct } from '@/utils/types';
-import { useProducts } from '@/services/product';
+import { useDeleteProduct, useProducts } from '@/services/product';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useRef, useState } from 'react';
@@ -17,6 +17,7 @@ const Product = () => {
     const [showInfo, setShowInfo] = useState(false);
     const [curId, setCurId] = useState('');
     const [showCard, setShowCard] = useState(false);
+    const [del, delLoading] = useDeleteProduct();
     const actionRef = useRef<ActionType>();
     const onEditHandler = (id?: string) => {
         if (id) {
@@ -26,7 +27,7 @@ const Product = () => {
         }
         setShowInfo(true);
     }
-    const closeAndFetchHandler = (isReload: boolean) => {
+    const closeAndFetchHandler = (isReload?: boolean) => {
         setShowInfo(false);
         setShowCard(false);
         if (isReload) {
@@ -41,8 +42,8 @@ const Product = () => {
         }
         setShowCard(true);
     }
-    const onDeleteHandler = () => {
-        
+    const onDeleteHandler = (id: string) => {
+        del(id, ()=>closeAndFetchHandler(true))
     }
     return (
         <PageContainer
@@ -52,6 +53,10 @@ const Product = () => {
         >
             <ProTable<IProduct>
                 rowKey='id'
+                form={{
+                    ignoreRules: false
+                }}
+                loading={delLoading}
                 columns={getColumns({
                     onEditHandler,
                     onCardHandler,
@@ -68,7 +73,7 @@ const Product = () => {
                 actionRef={actionRef}
             />
             {/* 组件按需加载不需要同时加载 */}
-            { showInfo && <EditProduct id={curId} onClose={(isReload: boolean) => closeAndFetchHandler(isReload)} />}
+            { showInfo && <EditProduct id={curId} onClose={(isReload?: boolean) => closeAndFetchHandler(isReload)} />}
             { showCard && <ConsumerCard id={curId} onClose={(isReload: boolean) => closeAndFetchHandler(isReload)} />}
         </PageContainer>
     );

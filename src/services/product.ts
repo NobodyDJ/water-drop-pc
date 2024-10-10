@@ -1,8 +1,9 @@
-import { COMMIT_PRODUCT, GET_PRODUCT, GET_PRODUCTS } from "@/graphgql/product";
+import { COMMIT_PRODUCT, DEL_PRODUCT, GET_PRODUCT, GET_PRODUCTS } from "@/graphgql/product";
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { TBaseProduct, TProductQuery, TProductsQuery } from "@/utils/types";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { App } from "antd";
+import { useMemo } from "react";
 
 // 获取一组商品，数组形式
 export const useProducts = (
@@ -66,7 +67,7 @@ export const useEditProductInfo = (): [handleEdit: any, loading: boolean] => {
         })
         if (res.data.commitProductInfo.code === 200) {
             message.success(res.data.commitProductInfo.message);
-            callback()
+            callback();
             return;
         }
         message.error(res.data.commitProductInfo.message);
@@ -97,13 +98,46 @@ export const useProduct = () => {
 // 获取商品信息 及时获取商品信息
 export const useProductInfo = (id: string) => {
     const { data, loading, refetch } = useQuery<TProductQuery>(GET_PRODUCT, {
+        skip: !id,// id不存在跳过请求
         variables: {
             id,
         },
     });
+    // 对返回的数据进行数组的包裹
+    const newData = useMemo(() => {
+        return {
+            ...data?.getProductInfo.data,
+            coverUrl: [{ url: data?.getProductInfo.data.coverUrl }],
+            bannerUrl: [{ url: data?.getProductInfo.data.bannerUrl }]
+        }
+    }, [data]);
     return {
-        data: data?.getProductInfo.data,
+        data: data?.getProductInfo.data ? newData : undefined,
         loading,
         refetch
     }
 }
+
+// 删除商品信息
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useDeleteProduct = (): [delHandler: any, loading: boolean] => {
+    const [del, { loading }] = useMutation(DEL_PRODUCT);
+    const { message } = App.useApp();
+    const delHandler = async (id: string, callback: () => void) => {
+    const res = await del({
+        variables: {
+            id,
+        },
+    }); 
+    if (res.data.deleteProduct.code === 200) {
+        message.success(res.data.deleteProduct.message);
+        setTimeout(() => {
+            callback();
+        }, 1000)
+        return;
+    }
+        message.error(res.data.deleteProduct.message);
+    };
+
+    return [delHandler, loading];
+};

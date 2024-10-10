@@ -53,3 +53,12 @@ export const GET_PRODUCT = gql`
     }
   }
 `;
+
+export const DEL_PRODUCT = gql`
+  mutation deleteProduct($id: String!) {
+    deleteProduct(id: $id) {
+      code
+      message
+    }
+  }
+`;
