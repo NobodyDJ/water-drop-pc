@@ -22,8 +22,8 @@ const CourseSearch = ({
         (name: string) => {
             search(name);
         },500)
-    const onChangeHandler = (val: string) => {
-        onSelected(val);
+    const onChangeHandler = (courseId: string) => {
+        onSelected(courseId);
     }
     return (
         <Select

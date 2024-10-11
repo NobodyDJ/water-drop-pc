@@ -1,10 +1,6 @@
+import { CARD_TYPE } from "@/utils/constants";
 import { ProColumns } from "@ant-design/pro-components";
 import { Button, Popconfirm, Space } from "antd";
-
-const CARD_TYPE = {
-    TIME: 'time',
-    DURATION: 'duration'
-}
 
 export const getColumns = (onDeleteHandler: (id: string) => void): ProColumns[] => [
     {

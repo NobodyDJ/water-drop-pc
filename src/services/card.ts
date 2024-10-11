@@ -1,6 +1,6 @@
 import { COMMIT_CARD, DELETE_CARD, GET_CARDS } from "@/graphgql/card";
 import { ICard, TBaseCard, TCardQuery } from "@/utils/types";
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { App } from "antd";
 
 // 获取消费卡信息
@@ -14,6 +14,23 @@ export const useCards = (id: string) => {
         data: data?.getCards.data as unknown as ICard[],
         loading,
         refetch
+    }
+}
+
+export const useLazyCards = () => {
+    const [get, { data, loading }] = useLazyQuery(GET_CARDS);
+
+    const getCards = (courseId: string) => {
+        get({
+            variables: {
+                courseId
+            }
+        })
+    }
+    return {
+        loading,
+        data: data?.getCards.data,
+        getCards
     }
 }
 
