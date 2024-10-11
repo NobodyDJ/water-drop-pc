@@ -30,6 +30,7 @@ const Product = () => {
     const closeAndFetchHandler = (isReload?: boolean) => {
         setShowInfo(false);
         setShowCard(false);
+        setCurId('');
         if (isReload) {
             actionRef.current?.reload(); // 使用此方法调用的数据，是不会把数据传递给表格组件，需要调用表格的刷新组件，实时获取数据
         }

@@ -173,6 +173,7 @@ export interface IProduct {
   originalPrice: number;
   stock: number;
   preferentialPrice: number;
+  cards: ICard[];
 }
 
 export type TBaseProduct = Partial<IProduct>;

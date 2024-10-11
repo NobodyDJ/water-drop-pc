@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import UploadImage from '@/components/OSSImageUpload';
 import { useEditProductInfo, useProductInfo } from '@/services/product';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const { TextArea } = Input;
 
@@ -24,10 +24,24 @@ const EditProduct = ({
 }: IProps) => {
     const [form] = Form.useForm();
     const [edit, editLoading] = useEditProductInfo();
-    const { data, loading } = useProductInfo(id || '');
+    const { loading, refetch } = useProductInfo(id || '');
     const [open, setOpen] = useState(true);
-
-
+    useEffect(() => {
+        const init = async () => {
+            if (id) {
+                const res = await refetch();
+                const newData = {
+                    ...res.data?.getProductInfo.data,
+                    coverUrl: [{ url: res.data?.getProductInfo.data.coverUrl }],
+                    bannerUrl: [{ url: res.data?.getProductInfo.data.bannerUrl }]
+                }
+                form.setFieldsValue(res.data?.getProductInfo.data ? newData : undefined);
+            } else {
+                form.resetFields();
+            }
+        }
+        init()
+    },[id])
     const onSubmitHandler = async () => {
         const values = await form.validateFields();
         if (values) {
@@ -57,10 +71,10 @@ const EditProduct = ({
             )}
         >
             <Spin spinning={loading}>
-                {(data || !id) && (
+                {(
                 <Form
                     form={form}
-                    initialValues={data}
+                    // initialValues={data}
                 >
                     <Row gutter={20}>
                         <Col span={18}>

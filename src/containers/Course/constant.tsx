@@ -1,6 +1,12 @@
-import { ICourse, IProps } from "@/utils/types";
+import { ICourse } from "@/utils/types";
 import { ProColumns } from "@ant-design/pro-components";
 import { Button, Space } from "antd";
+
+interface IProps {
+  onEditHandler: (id: string) => void,
+  onOrderTimeHandler: (id: string) => void,
+  onCardHandler: (id: string) => void,
+}
 
 export const getColumns: ({
   onEditHandler,

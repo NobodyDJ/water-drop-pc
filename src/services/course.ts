@@ -107,3 +107,26 @@ export const useCourseInfo = (id: string) => {
         refetch
     }
 }
+
+// 课程搜索
+export const useCourseSearch = () => {
+    const [get, { data, loading }] = useLazyQuery<TCoursesQuery>(GET_COURSES);
+
+    const searchHandler = (name: string) => {
+        get({
+        variables: {
+            name,
+            page: {
+                pageNum: 1,
+                pageSize: DEFAULT_PAGE_SIZE,
+            },
+        },
+        });
+    };
+
+    return {
+        loading,
+        data: data?.getCourses.data,
+        search: searchHandler,
+    };
+}
