@@ -1,9 +1,9 @@
 import style from './index.module.less';
 import { Modal, Result, Row, Space, Typography } from 'antd';
 import { CheckCard } from '@ant-design/pro-components';
-import { useEditCardInfo, useLazyCards } from '@/services/card';
-import { useMemo, useState } from 'react';
-import { useProductInfo } from '@/services/product';
+import { useLazyCards } from '@/services/card';
+import { useEffect, useMemo, useState } from 'react';
+import { useEditProductInfo, useProductInfo } from '@/services/product';
 import CourseSearch from '@/components/CourseSearch';
 import _ from 'lodash';
 import { CreditCardOutlined } from '@ant-design/icons';
@@ -23,17 +23,25 @@ const ConsumerCard = ({
     onClose
 }: IProps) => {
     const [ selectedCards, setSelectedCards ] = useState<string[]>([]); // 选中的消费卡id数组
-    const [edit, editLoading] = useEditCardInfo();
-    const { data: product, loading: getProductLoading } = useProductInfo(id || '');
+    const [edit, editLoading] = useEditProductInfo();
+    const { data: product, loading: getProductLoading, refetch } = useProductInfo(id || '');
     const { data: cards, loading: getCardsLoading, getCards } = useLazyCards();
-    console.log('product', product);
-    const newCards = useMemo(()=> _.unionBy(product?.cards, cards, 'id'), [cards, product?.cards]);
+    const newCards = useMemo(() => _.unionBy(product?.cards, cards, 'id'), [cards, product?.cards]);
+    useEffect(() => {
+        if (id) {
+            refetch();
+        }
+    }, [])
+    useEffect(() => {
+        setSelectedCards(product?.cards?.map((item) => item.id) || [] );
+    }, [product?.cards])
     const onOkHandler = () => {
         edit(id, {
-
-        })
+            cards: selectedCards
+        },()=>onClose(true))
     }
     const onSelectedHandler = (courseId: string) => {
+        console.log(courseId);
         getCards(courseId);
     }
     return (
@@ -67,13 +75,14 @@ const ConsumerCard = ({
                         {
                             newCards.map((item) => (
                                 <CheckCard
+                                    className={style['ant-pro-checkcard-title']}
                                     key={item.id}
                                     value={item.id}
                                     size='small'
                                     avatar={<CreditCardOutlined />}
                                     title={
                                         (
-                                            <>
+                                            <div>
                                                 <Space>
                                                     <Typography.Text
                                                         ellipsis
@@ -81,16 +90,12 @@ const ConsumerCard = ({
                                                     >
                                                         {item.course?.name}
                                                     </Typography.Text>
-                                                    {getCardName(item.type)}
                                                 </Space>
-                                                <Row>
+                                                {getCardName(item.type)}
                                                 <div>
                                                     {item.name}
                                                 </div>
-                                                </Row>
-                                               
-                                                
-                                            </>
+                                            </div>
                                         )
                                     }
                                     description={

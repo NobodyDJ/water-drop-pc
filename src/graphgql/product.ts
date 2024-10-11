@@ -55,6 +55,10 @@ export const GET_PRODUCT = gql`
           type
           time
           validityDay
+          course {
+            id
+            name
+          }
         }
       }
     }

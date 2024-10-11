@@ -28,14 +28,15 @@ const Product = () => {
         setShowInfo(true);
     }
     const closeAndFetchHandler = (isReload?: boolean) => {
+        setCurId('');
         setShowInfo(false);
         setShowCard(false);
-        setCurId('');
         if (isReload) {
             actionRef.current?.reload(); // 使用此方法调用的数据，是不会把数据传递给表格组件，需要调用表格的刷新组件，实时获取数据
         }
     }
     const onCardHandler = (id: string) => {
+        console.log('id', id);
         if (id) {
             setCurId(id);
         } else {

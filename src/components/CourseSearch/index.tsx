@@ -37,9 +37,7 @@ const CourseSearch = ({
         >
             {
                 data?.map((item) =>
-                    <Select.Option
-                        key={item.id}
-                        value={item.id}>
+                    <Select.Option key={item.id} value={item.id}>
                         {item.name}
                     </Select.Option>)
             }
