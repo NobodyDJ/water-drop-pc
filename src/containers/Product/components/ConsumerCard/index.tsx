@@ -26,12 +26,13 @@ const ConsumerCard = ({
     const [edit, editLoading] = useEditProductInfo();
     const { data: product, loading: getProductLoading, refetch } = useProductInfo(id || '');
     const { data: cards, loading: getCardsLoading, getCards } = useLazyCards();
+    const [isModalVisible, setModalVisible] = useState(true);
     const newCards = useMemo(() => _.unionBy(product?.cards, cards, 'id'), [cards, product?.cards]);
     useEffect(() => {
-        if (id) {
-            refetch();
+        if (isModalVisible && id) {
+            refetch(); // always fetch data when modal opens and id is available
         }
-    }, [])
+    }, [isModalVisible, id]);
     useEffect(() => {
         setSelectedCards(product?.cards?.map((item) => item.id) || [] );
     }, [product?.cards])
@@ -51,7 +52,11 @@ const ConsumerCard = ({
                 width="900"
                 open
                 onOk={onOkHandler}
-                onCancel={() => onClose(false)}
+                onCancel={() => {
+                    setModalVisible(false);
+                    onClose(false)
+                }}
+                afterClose={() => setModalVisible(false)}
             >
                 <Row justify="end">
                     <CourseSearch onSelected={onSelectedHandler}/>
