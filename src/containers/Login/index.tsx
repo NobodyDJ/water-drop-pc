@@ -13,7 +13,7 @@ import { App, Tabs, theme } from 'antd';
 import { useState } from 'react';
 import styles from './index.module.less'
 import { useMutation } from '@apollo/client';
-import { LOGIN, SEND_CODE_MSG } from '@/graphgql/auth';
+import { LOGIN, SEND_CODE_MSG } from '@/graphql/auth';
 import { ProFormInstance } from '@ant-design/pro-components';
 import React from 'react';
 import { AUTH_TOKEN } from '@/utils/constants';

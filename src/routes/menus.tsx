@@ -1,4 +1,4 @@
-import { GiftOutlined, HomeOutlined, PicRightOutlined, ShopOutlined, TeamOutlined } from '@ant-design/icons'
+import { GiftOutlined, HomeOutlined, IdcardOutlined, PicRightOutlined, ShopOutlined, TeamOutlined } from '@ant-design/icons'
 
 // 定义路由的数据结构
 interface IRoute{
@@ -17,6 +17,7 @@ export const ROUTE_KEY = {
     Course: 'course',
     Product: 'product',
     NotFound: 'NotFound',
+    TEACHER: 'teacher',
   };
 
 export const ROUTE_CONFIG: Record<string, IRoute> = {
@@ -63,11 +64,16 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
         name: '商品管理',
         icon: <GiftOutlined />
     },
+    [ROUTE_KEY.TEACHER]: {
+        path: 'teacher',
+        name: '教师管理',
+        icon: <IdcardOutlined />,
+    },
     [ROUTE_KEY.NotFound]: {
         path: '*',
         hideInMenu: true,
         name: '404'
-    }
+    },
 }
 // 获取路由列表
 export const routes = Object.keys(ROUTE_CONFIG).map((key) => {

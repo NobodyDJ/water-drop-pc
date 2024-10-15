@@ -1,4 +1,4 @@
-import { GET_STUDENTS } from "@/graphgql/student";
+import { GET_STUDENTS } from "@/graphql/student";
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { TStudentQuery } from "@/utils/types";
 import { useQuery } from "@apollo/client";

@@ -1,4 +1,4 @@
-import { COMMIT_PRODUCT, DEL_PRODUCT, GET_PRODUCT, GET_PRODUCTS } from "@/graphgql/product";
+import { COMMIT_PRODUCT, DEL_PRODUCT, GET_PRODUCT, GET_PRODUCTS } from "@/graphql/product";
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { TBaseProduct, TProductQuery, TProductsQuery } from "@/utils/types";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";

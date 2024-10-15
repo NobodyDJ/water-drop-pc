@@ -1,7 +1,7 @@
 import type { UploadFile, UploadProps } from 'antd';
 import { Upload } from 'antd';
 import { useQuery } from '@apollo/client';
-import { GET_OSS_INFO } from '@/graphgql/oss';
+import { GET_OSS_INFO } from '@/graphql/oss';
 import ImgCrop from 'antd-img-crop';
 
 interface OSSDataType {

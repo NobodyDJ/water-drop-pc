@@ -181,4 +181,23 @@ export type TBaseProduct = Partial<IProduct>;
 
 export type TProductsQuery = { [key: string]: { __typename?: 'Query', data: IProduct[], page: IPage } };
 
-export type TProductQuery = { [key: string]: { __typename?: 'Query', data: IProduct, page: IPage } };
+export type TProductQuery = { [key: string]: { __typename?: 'Query', data: IProduct } };
+
+/**
+ * 教师类型
+ */
+export interface ITeacher {
+  id: string;
+  name: string;
+  photoUrl: string;
+  teacherTime: number;
+  education: string;
+  seniority: string;
+  experience: string;
+  carryPrize: string;
+  tags: string;
+}
+
+export type TBaseTeacher = Partial<ITeacher>;
+export type TTeachersQuery = { [key: string]: { __typename?: 'Query', data: ITeacher[], page: IPage } };
+export type TTeacherQuery = { [key: string]: { __typename?: 'Query', data: ITeacher } };

@@ -1,4 +1,4 @@
-import { COMMIT_ORG, DEL_ORG, GET_ORG, GET_ORGS, GET_SAMPLE_ORGS } from "@/graphgql/org"
+import { COMMIT_ORG, DEL_ORG, GET_ORG, GET_ORGS, GET_SAMPLE_ORGS } from "@/graphql/org"
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { TBaseOrganization, TOrgQuery, TOrgsQuery } from "@/utils/types";
 import { useMutation, useQuery } from "@apollo/client"

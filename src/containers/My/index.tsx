@@ -5,7 +5,7 @@ import { App, Col, Row } from 'antd';
 import UploadImage from '@/components/OSSImageUpload';
 import { useUserContext } from '@/hooks/userHooks';
 import { useMutation } from '@apollo/client';
-import { UPDATE_USER } from '@/graphgql/user';
+import { UPDATE_USER } from '@/graphql/user';
 import FormItem from 'antd/es/form/FormItem';
 import styles from './index.module.less'
 

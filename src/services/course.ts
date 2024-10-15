@@ -1,4 +1,4 @@
-import { COMMIT_COURSE, GET_COURSE, GET_COURSES } from "@/graphgql/course";
+import { COMMIT_COURSE, GET_COURSE, GET_COURSES } from "@/graphql/course";
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
 import { TBaseCourse, TCourseQuery, TCoursesQuery } from "@/utils/types";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";

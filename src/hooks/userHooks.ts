@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { connectFactory, useAppContext } from "../utils/contextFactory";
-import { GET_USER } from "../graphgql/user";
+import { GET_USER } from "../graphql/user";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IUser } from "@/utils/types";
 

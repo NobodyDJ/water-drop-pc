@@ -1,4 +1,4 @@
-import { COMMIT_CARD, DELETE_CARD, GET_CARDS } from "@/graphgql/card";
+import { COMMIT_CARD, DELETE_CARD, GET_CARDS } from "@/graphql/card";
 import { ICard, TBaseCard, TCardQuery } from "@/utils/types";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { App } from "antd";
