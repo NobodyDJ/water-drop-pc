@@ -173,6 +173,7 @@ export interface IProduct {
   desc: string;
   originalPrice: number;
   stock: number;
+  status: string;
   preferentialPrice: number;
   cards: ICard[];
 }

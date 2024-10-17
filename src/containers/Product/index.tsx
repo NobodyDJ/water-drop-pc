@@ -2,7 +2,7 @@ import { ActionType, PageContainer, ProTable } from '@ant-design/pro-components'
 import { getColumns } from './constant';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { IProduct } from '@/utils/types';
-import { useDeleteProduct, useProducts } from '@/services/product';
+import { useDeleteProduct, useEditProductInfo, useProducts } from '@/services/product';
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useRef, useState } from 'react';
@@ -13,11 +13,12 @@ import ConsumerCard from './components/ConsumerCard';
 *   产品信息
 */
 const Product = () => {
-    const { data, refetch } = useProducts();
+    const { data, refetch, loading } = useProducts();
     const [showInfo, setShowInfo] = useState(false);
     const [curId, setCurId] = useState('');
     const [showCard, setShowCard] = useState(false);
     const [del, delLoading] = useDeleteProduct();
+    const [edit, editLoading] = useEditProductInfo();
     const actionRef = useRef<ActionType>();
     const onEditHandler = (id?: string) => {
         if (id) {
@@ -47,10 +48,16 @@ const Product = () => {
     const onDeleteHandler = (id: string) => {
         del(id, ()=>closeAndFetchHandler(true))
     }
+    const onStatusChangeHandler = (id: string, status: string) => {
+        edit(id, {
+            status
+        }, () => closeAndFetchHandler(true));
+    }
+
     return (
         <PageContainer
             header={{
-                title: '当前门店下开设的课程'
+                title: '当前门店下的商品'
             }}
         >
             <ProTable<IProduct>
@@ -58,11 +65,12 @@ const Product = () => {
                 form={{
                     ignoreRules: false
                 }}
-                loading={delLoading}
+                loading={delLoading || editLoading || loading}
                 columns={getColumns({
                     onEditHandler,
                     onCardHandler,
-                    onDeleteHandler
+                    onDeleteHandler,
+                    onStatusChangeHandler,
                 })}
                 dataSource={data}
                 pagination={{

@@ -19,6 +19,7 @@ export const GET_PRODUCTS = gql`
         desc
         originalPrice
         stock
+        status
         preferentialPrice
       }
     }
@@ -48,6 +49,7 @@ export const GET_PRODUCT = gql`
         desc
         originalPrice
         stock
+        status
         preferentialPrice
         cards{
           id
