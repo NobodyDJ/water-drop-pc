@@ -7,6 +7,7 @@ import {
 import UploadImage from '@/components/OSSImageUpload';
 import { useEditProductInfo, useProductInfo } from '@/services/product';
 import { useEffect, useState } from 'react';
+import TypeSelect from '@/components/TypeSelect';
 
 const { TextArea } = Input;
 
@@ -57,7 +58,7 @@ const EditProduct = ({
     return (
         <Drawer
             title={id ? '编辑商品' : '新建商品'}
-            width={720}
+            width={900}
             open={open}
             onClose={() => setOpen(false)}
             afterOpenChange={(open) => !open && onClose()}
@@ -89,6 +90,17 @@ const EditProduct = ({
                         </Col>
                         <Col span={6}>
                             <Form.Item
+                                label="商品分类"
+                                name="type"
+                                rules={[{ required: true }]}
+                            >
+                                <TypeSelect />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={20}>
+                        <Col span={6}>
+                            <Form.Item
                                 label="库存总额"
                                 name="stock"
                                 rules={[{ required: true }]}
@@ -96,9 +108,7 @@ const EditProduct = ({
                                 <InputNumber />
                             </Form.Item>
                         </Col>
-                    </Row>
-                    <Row gutter={20}>
-                        <Col span={8}>
+                        <Col span={6}>
                             <Form.Item
                                 label="原价"
                                 name="originalPrice"
@@ -107,7 +117,7 @@ const EditProduct = ({
                                 <InputNumber />
                             </Form.Item>
                         </Col>
-                        <Col span={8}>
+                        <Col span={6}>
                             <Form.Item
                                 label="优惠价"
                                 name="preferentialPrice"
@@ -116,7 +126,7 @@ const EditProduct = ({
                                 <InputNumber />
                             </Form.Item>
                         </Col>
-                        <Col span={8}>
+                        <Col span={6}>
                             <Form.Item
                                 label="每人限购数量"
                                 name="limitBuyNumber"
