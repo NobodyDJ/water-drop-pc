@@ -43,6 +43,7 @@ export const GET_PRODUCT = gql`
       data {
         id
         limitBuyNumber
+        type
         name
         coverUrl
         bannerUrl
@@ -75,3 +76,13 @@ export const DEL_PRODUCT = gql`
     }
   }
 `;
+
+export const GET_PRODUCT_TYPES = gql`
+query getProductTypes{
+  getProductTypes{
+    data {
+      key
+      title
+    }
+  }
+}`;

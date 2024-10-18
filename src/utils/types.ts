@@ -162,7 +162,7 @@ export type TCardsQuery = { [key: string]: { __typename?: 'Query', data: ICard[]
 export type TCardQuery = { [key: string]: { __typename?: 'Query', data: ICard } };
 
 /**
- * 商品类型
+ * 商品
  */
 export interface IProduct {
   id: string;
@@ -202,3 +202,14 @@ export interface ITeacher {
 export type TBaseTeacher = Partial<ITeacher>;
 export type TTeachersQuery = { [key: string]: { __typename?: 'Query', data: ITeacher[], page: IPage } };
 export type TTeacherQuery = { [key: string]: { __typename?: 'Query', data: ITeacher } };
+
+/**
+ * 商品类型
+ */
+
+export interface IProductType{
+    key: string;
+    title: string;
+}
+
+export type TProductTypeQuery = { [key: string]: { __typename?: 'Query', data: IProductType[] } }

@@ -1,6 +1,6 @@
-import { COMMIT_PRODUCT, DEL_PRODUCT, GET_PRODUCT, GET_PRODUCTS } from "@/graphql/product";
+import { COMMIT_PRODUCT, DEL_PRODUCT, GET_PRODUCT, GET_PRODUCT_TYPES, GET_PRODUCTS } from "@/graphql/product";
 import { DEFAULT_PAGE_SIZE } from "@/utils/constants";
-import { TBaseProduct, TProductQuery, TProductsQuery } from "@/utils/types";
+import { TBaseProduct, TProductQuery, TProductsQuery, TProductTypeQuery } from "@/utils/types";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { App } from "antd";
 import { useMemo } from "react";
@@ -141,3 +141,13 @@ export const useDeleteProduct = (): [delHandler: any, loading: boolean] => {
 
     return [delHandler, loading];
 };
+
+// 获取商品分类列表
+export const useProductType = () => {
+    const { data, loading } = useQuery<TProductTypeQuery>(GET_PRODUCT_TYPES);
+    
+    return {
+        data: data?.getProductTypes.data,
+        loading
+    }
+}
