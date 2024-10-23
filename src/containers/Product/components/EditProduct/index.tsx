@@ -11,11 +11,6 @@ import TypeSelect from '@/components/TypeSelect';
 
 const { TextArea } = Input;
 
-const PRODUCT_STATUS = {
-    LIST: 'LIST',
-    UN_LIST: 'UN_LIST',
-};
-
 interface IProps {
     id?: string;
     onClose: (isReload?: boolean) => void;
@@ -53,7 +48,6 @@ const EditProduct = ({
         if (values) {
             const newValues = {
                 ...values,
-                status: values.status ? values.status : PRODUCT_STATUS.LIST,
                 coverUrl: values.coverUrl[0].url,
                 bannerUrl: values.bannerUrl[0].url,
             };
