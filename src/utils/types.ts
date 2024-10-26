@@ -152,7 +152,6 @@ export interface ICard{
     type: string;
     time: number;
     validityDay: number;
-    course: ICourse;
 }
 
 export type TBaseCard = Partial<ICard>;

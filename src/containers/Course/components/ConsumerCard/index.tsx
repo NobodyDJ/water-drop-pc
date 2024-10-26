@@ -4,7 +4,6 @@ import { EditableProTable } from '@ant-design/pro-components';
 import { ICard } from '@/utils/types';
 import { getColumns } from './constants';
 import { useCards, useDeleteCard, useEditCardInfo } from '@/services/card';
-import _ from 'lodash';
 
 /**
 *   关联消费卡
@@ -29,7 +28,12 @@ const ConsumerCard = ({
         handleEdit(
             data.id === 'new' ? '' : data.id,
             id,
-            { ...(_.omit(data, ['index', 'id'])) },
+            {
+                name: data.name,
+                type: data.type,
+                time: data.time,
+                validityDay: data.validityDay,
+            },
             refetch
         )
     }
