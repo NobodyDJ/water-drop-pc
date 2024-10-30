@@ -9,6 +9,10 @@ export interface IStore<T>{
     setStore: (payload: Partial<T >) => void;
 }
 
+export interface IValue {
+  label: string;
+  value: string;
+}
 
 export interface IUser {
     id: string;
@@ -82,6 +86,7 @@ export interface ICourse{
     name: string;
     desc: string;
     group: string;
+    coverUrl: string;
     baseAbility: string;
     limitNumber: number;
     duration: number;
@@ -89,6 +94,8 @@ export interface ICourse{
     refundInfo: string;
     otherInfo: string;
     reducibleTime: IWeekCourse[];
+    teachers: ITeacher[];
+
 }
 
 export type TBaseCourse = Partial<ICourse>;
