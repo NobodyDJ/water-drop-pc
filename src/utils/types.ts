@@ -219,3 +219,15 @@ export interface IProductType{
 }
 
 export type TProductTypeQuery = { [key: string]: { __typename?: 'Query', data: IProductType[] } }
+
+export interface ISchedule {
+  id: string;
+  schoolDay: string;
+  startTime: string;
+  endTime: string;
+  limitNumber: number; // 限制上课人数
+  course: ICourse;
+  org: IOrganization;
+}
+
+export type TSchedulesQuery = { [key: string]: { __typename?: 'Query', data: ISchedule[] } };

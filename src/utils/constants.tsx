@@ -4,6 +4,8 @@ export const AUTH_TOKEN = 'auth-token'
 export const DEFAULT_PAGE_SIZE = 10;
 export const LOCAL_CURRENT_ORG = 'local_current_org';
 
+export const DAY_FORMAT = 'YYYY-MM-DD';
+
 // 卡类型
 export const CARD_TYPE = {
   TIME: 'time', // 次卡
