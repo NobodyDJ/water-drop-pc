@@ -54,6 +54,7 @@ const OrgSelect = () => {
                 filterOption={false}
                 onSearch={onSearchHandler}
                 onChange={onChangeHandler}
+                optionLabelProp="children"
             >
                 {data?.map((item) => (
                     <Select.Option key={item.id} value={item.id}>

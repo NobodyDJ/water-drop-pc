@@ -54,7 +54,7 @@ const Page = () => {
         sessionStorage.setItem(AUTH_TOKEN, res.data.login.data);
       }
       message.success(res.data.login.message);
-      nav(params.get('orgUrl') || '/home');
+      nav(params.get('orgUrl') || '/');
       return;
     }
     message.error(res.data.login.message);  
