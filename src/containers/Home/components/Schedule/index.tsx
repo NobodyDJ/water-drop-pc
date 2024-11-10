@@ -1,6 +1,7 @@
 import { useSchedules } from '@/services/dashboard';
 import style from './index.module.less';
-import { Avatar, Descriptions, Space, Steps } from 'antd';
+import { Avatar, Descriptions, Result, Space, Spin, Steps, Tooltip } from 'antd';
+import { SCHEDULE_STATUS } from '@/utils/constants';
 
 interface IProps{
     day: string;
@@ -12,9 +13,17 @@ interface IProps{
 const Schedule = ({
     day
 }:IProps) => {
-    const { data } = useSchedules(day);
+    const { data, loading } = useSchedules(day);
+    if (data?.length === 0) {
+      return (
+        <Result
+          status="warning"
+          title="当前没有排课，快去排课吧"
+        />
+      );
+    }
     return (
-        <div className={style.container}>
+        <Spin spinning={loading} className={style.container}>
             <Steps
                 direction='vertical'
                 items={
@@ -48,18 +57,24 @@ const Schedule = ({
                                 {/* 学生区域，涉及支付，暂未完成需要优化 */}
                                 <Descriptions.Item
                                     span={3}
-                                    label={`学员(${item.course.teachers.length})`}
+                                    label={`学员(${item.scheduleRecords.length})`}
                                     labelStyle={{
                                       width: 80,
                                     }}
                                 >
+                                    {item.scheduleRecords.length === 0 && '暂无学员预约'}
                                     <Avatar.Group>
                                         {
-                                            item.course.teachers.map((teacher) => (
-                                              <Avatar
-                                                key={teacher.id}
-                                                src={teacher.photoUrl}
-                                              />
+                                            item.scheduleRecords.map((sr) => (
+                                            <Tooltip
+                                                key={sr.id}
+                                                title={sr.student.name + (sr.status === SCHEDULE_STATUS.CANCEL ? '：已取消' : '')}
+                                            >
+                                                <Avatar
+                                                key={sr.student.id}
+                                                src={sr.student.avatar}
+                                                />
+                                            </Tooltip>
                                             ))
                                         }
                                     </Avatar.Group>
@@ -69,7 +84,7 @@ const Schedule = ({
                     }))
                 }
             />
-        </div>
+        </Spin>
     );
 };
 

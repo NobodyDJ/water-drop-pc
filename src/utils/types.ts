@@ -228,6 +228,13 @@ export interface ISchedule {
   limitNumber: number; // 限制上课人数
   course: ICourse;
   org: IOrganization;
+  scheduleRecords: IScheduleRecord[];
 }
 
 export type TSchedulesQuery = { [key: string]: { __typename?: 'Query', data: ISchedule[] } };
+
+export interface IScheduleRecord {
+  id: string;
+  status: string;
+  student: IStudent;
+}
