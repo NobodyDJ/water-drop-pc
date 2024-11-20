@@ -2,7 +2,6 @@ import { Button, Result } from 'antd';
 import { useUserContext } from '@/hooks/userHooks';
 import { useGoTo } from '@/hooks';
 import { useEffect } from 'react';
-import { ROUTE_KEY } from '@/routes/menus';
 
 /**
 *
@@ -12,7 +11,7 @@ const NoOrg = () => {
     const { go } = useGoTo();
     useEffect(() => {
         if (store.currentOrg) {
-            go(ROUTE_KEY.HOME);
+            go();
         }
     }, [store.currentOrg]);
     return (
