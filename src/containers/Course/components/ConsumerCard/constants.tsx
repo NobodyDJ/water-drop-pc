@@ -10,7 +10,7 @@ export const getColumns = (onDeleteHandler: (id: string) => void): ProColumns[] 
         editable: false,
         align: 'center',
         // 渲染样式
-        render: (text, record, index)=> index + 1
+        render: (_text, _record, index)=> index + 1
     },
     {
         title: '名称',
@@ -55,7 +55,7 @@ export const getColumns = (onDeleteHandler: (id: string) => void): ProColumns[] 
         dataIndex: 'id',
         width: 150,
         align: 'center',
-        render: (text, record, _, action) => [
+        render: (_text, record, _, action) => [
             <Space key="space">
                 <Button
                     key="edit"

@@ -32,7 +32,7 @@ export const useGoTo = () => {
             // exp1表示匹配到的URL参数名称，如:id
             const url = route.path.replace(
             /\/:(\w+)/g,
-            (exp: string, exp1: string) => `/${params[exp1]}`,
+            (_exp: string, exp1: string) => `/${params[exp1]}`,
             );
             nav(`/${url}`);
         }

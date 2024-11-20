@@ -5,10 +5,10 @@ import { getCurrentOrg } from ".";
 import { message } from 'antd';
 import { onError } from '@apollo/client/link/error';
 
-let uri = `http://${window.location.hostname}:3000/graphql`;
-if (process.env.NODE_ENV === 'production') {
-  uri = 'https://water-drop.yondu.vip/graphql';
-}
+const uri = '/graphql';
+// if (process.env.NODE_ENV === 'production') {
+//   uri = 'https://water-drop.yondu.vip/graphql';
+// }
 
 const httpLink = createHttpLink({
     uri,

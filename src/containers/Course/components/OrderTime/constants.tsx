@@ -40,7 +40,7 @@ export const getColumns = (onDeleteHandler: (key: number) => void): ProColumns[]
     dataIndex: 'id',
     width: 150,
     align: 'center',
-    render: (text, record, _, action) => [
+    render: (_text, record, _, action) => [
       <Space>
         <Button
           key="edit"

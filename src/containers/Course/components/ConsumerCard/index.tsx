@@ -53,7 +53,7 @@ const ConsumerCard = ({
                     loading={loading || editLoading || delLoading}
                     columns={getColumns((id: string) => onDeleteHandler(id))}
                     editable={{
-                        onSave: async (key, row) => {
+                        onSave: async (_key, row) => {
                             onSaveHandler(row);
                         },
                         onDelete: async (key) => {

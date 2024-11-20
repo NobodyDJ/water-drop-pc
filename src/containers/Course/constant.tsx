@@ -40,7 +40,7 @@ export const getColumns: ({
     dataIndex: 'id',
     width: 220,
     align: 'center',
-    render: (text, entity) => [
+    render: (_text, entity) => [
       <Space key="space" size="small">
         <Button
           key="edit"

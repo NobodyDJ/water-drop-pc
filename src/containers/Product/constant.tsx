@@ -103,7 +103,7 @@ export const getColumns: ({
     dataIndex: 'id',
     width: 250,
     align: 'center',
-    render: (text, entity) => [
+    render: (_text, entity) => [
       <Space key="space" size="small">
         {entity.status === PRODUCT_STATUS.UN_LIST
           ? (
