@@ -37,7 +37,12 @@ class Cxt<T = any>{
         this.defaultStore = {
             key,
             store: defaultValue,
-            setStore: ()=>{},
+            setStore: (payload: any) => {
+                this.defaultStore.store = {
+                    ...this.defaultStore.store,
+                    ...payload
+                };
+            },
         }
         // 将全局变量存储在AppContext中
         this.AppContext = createContext(this.defaultStore);

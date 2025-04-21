@@ -37,7 +37,6 @@ const Product = () => {
         }
     }
     const onCardHandler = (id: string) => {
-        console.log('id', id);
         if (id) {
             setCurId(id);
         } else {

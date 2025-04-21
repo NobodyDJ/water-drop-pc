@@ -64,7 +64,7 @@ const Page = () => {
       className={styles.container}
     >
       <LoginFormPage
-        initialValues={{tel: '18221941518'}}
+        initialValues={{tel: '18221941517'}}
         logo="https://water-drop-assets-dj.oss-cn-shanghai.aliyuncs.com/images/henglogo%403x.png"
         backgroundImageUrl="https://mdn.alipayobjects.com/huamei_gcee1x/afts/img/A*y0ZTS6WLwvgAAAAAAAAAAAAADml6AQ/fmt.webp"
         backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
@@ -188,6 +188,10 @@ const Page = () => {
               ]}
               onGetCaptcha={async () => {
                 const tel = formRef.current?.getFieldValue('tel');
+                if (!tel) {
+                  message.error('请输入手机号');
+                  return;
+                }
                 const res = await run({
                   variables: {
                     tel
@@ -196,7 +200,7 @@ const Page = () => {
                 if (res.data.sendCodeMsg.code === 200) {
                   message.success(res.data.sendCodeMsg.message);
                 } else {
-                  message.error(res.data.sendCodeMsg.message)
+                  message.error(res.data.sendCodeMsg.message);
                 }
               }}
             />

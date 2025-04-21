@@ -42,7 +42,6 @@ const ConsumerCard = ({
         },()=>onClose(true))
     }
     const onSelectedHandler = (courseId: string) => {
-        console.log(courseId);
         getCards(courseId);
     }
     return (

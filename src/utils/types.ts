@@ -33,7 +33,7 @@ export interface IPage {
 export interface IStore<T>{
     key: string;
     store: T;
-    setStore: (payload: Partial<T >) => void;
+    setStore: (payload: Partial<T>) => void;
 }
 
 export interface IMedia {
