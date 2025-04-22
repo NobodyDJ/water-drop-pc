@@ -12,14 +12,16 @@ import {
 import { App, Tabs, theme } from 'antd';
 import { useState } from 'react';
 import styles from './index.module.less'
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { LOGIN, SEND_CODE_MSG } from '@/graphql/auth';
+import { GET_USER } from '@/graphql/user';
 import { ProFormInstance } from '@ant-design/pro-components';
 import React from 'react';
 import { AUTH_TOKEN } from '@/utils/constants';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTitle } from '@/hooks';
 import { useUserContext } from '@/hooks/userHooks';
+import { IUser } from '@/utils/types';
 type LoginType = 'phone' | 'account';
 
 interface IValue{
@@ -36,16 +38,29 @@ const Page = () => {
   const { message } = App.useApp();
   // 获取之前跳转失败的路径
   const [params] = useSearchParams();
-  const { store } = useUserContext();
-  const formRef = React.useRef<ProFormInstance>();// 引入获取form表单实例
+  const { setStore } = useUserContext();
+  const formRef = React.useRef<ProFormInstance>();
   const nav = useNavigate();
   useTitle('登录')
+
+  const { refetch: fetchUserInfo } = useQuery<{ getUserInfo: IUser }>(GET_USER, {
+    skip: true,
+    onCompleted: (data) => {
+      if (data.getUserInfo) {
+        const { id, name, tel, desc, avatar } = data.getUserInfo;
+        setStore({
+          id, name, tel, desc, avatar, refetchHandler: fetchUserInfo
+        });
+        nav(params.get('orgUrl') || '/');
+      }
+    }
+  });
+
   const loginHandler = async (values: IValue) => {
     const res = await login({
       variables: values
     });
     if (res.data.login.code === 200) {
-      store.refetchHandler();
       if (values.autoLogin) {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, res.data.login.data);
@@ -54,7 +69,8 @@ const Page = () => {
         sessionStorage.setItem(AUTH_TOKEN, res.data.login.data);
       }
       message.success(res.data.login.message);
-      nav(params.get('orgUrl') || '/');
+      // 登录成功后直接获取用户信息
+      await fetchUserInfo();
       return;
     }
     message.error(res.data.login.message);  

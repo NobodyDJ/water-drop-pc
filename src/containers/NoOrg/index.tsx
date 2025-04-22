@@ -19,7 +19,7 @@ const NoOrg = () => {
         status="404"
         title="请选择门店"
         subTitle="所有管理的行为都是基于您选择的门店进行筛选的"
-        extra={<Button type="primary">返回首页</Button>}
+        extra={<Button type="primary" onClick={() => go()}>返回首页</Button>}
         />
     );
 };
